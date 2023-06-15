@@ -77,7 +77,9 @@ function reset_repos {
     fi
     local base_path="$1" all=${2:-""}
     git -C $base_path reset --hard
-    git -C $base_path/repositories/stable-diffusion-stability-ai reset --hard
+    if test -d "$base_path/repositories/stable-diffusion-stability-ai"; then
+      git -C $base_path/repositories/stable-diffusion-stability-ai reset --hard
+    fi
     if [ "$all" = "all" ]; then
       cd $base_path/extensions && find . -maxdepth 1 -type d \( ! -name . \) -exec bash -c "echo '{}' && git -C '{}' reset --hard && git pull" \;
     fi
