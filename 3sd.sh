@@ -202,6 +202,7 @@ function install_from_template {
           else
             base_name=$(basename $trimmed_url)
           fi
+          echo "->base_name: $base_name"
           if [[ ! -z $trimmed_url ]]; then
             type=$(basename $config_path | cut -d "." -f 1)
             git ls-remote $trimmed_url &> /dev/null
