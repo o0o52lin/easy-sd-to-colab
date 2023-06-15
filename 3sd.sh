@@ -95,6 +95,7 @@ function sed_for {
         return 1
     fi
     if [[ $option == "installation" ]]; then
+        sed -i -e 's/ checkout {commithash}/ checkout -f {commithash}/g' $base_dir/launch.py
         sed -i -e 's/    start()/    #start()/g' $base_dir/launch.py
     elif [[ $option == "run" ]]; then
         sed -i -e """/    prepare_environment()/a\    os.system\(f\'''sed -i -e ''\"s/dict()))/dict())).cuda()/g\"'' $base_dir/repositories/stable-diffusion-stability-ai/ldm/util.py''')""" $base_dir/launch.py
@@ -104,7 +105,7 @@ function sed_for {
         echo "Usage: sed_for <installation|run> <base_dir>"
         return 1
     fi
-    sed -i -e 's/checkout {commithash}/checkout --force {commithash}/g' $base_dir/launch.py
+    sed -i -e 's/}" checkout {/}" checkout -f {/g' $base_dir/launch.py
 }
 
 function prepare_perf_tools {
