@@ -97,10 +97,10 @@ function sed_for {
         return 1
     fi
     if [[ $option == "installation" ]]; then
-        sed -i -e 's/ checkout {commithash}/ checkout -f {commithash}/g' $base_dir/launch.py
+        sed -i -e 's/ checkout {commithash}/ checkout -f {commithash}/g' $base_dir/modules/launch_utils.py
         sed -i -e 's/    start()/    #start()/g' $base_dir/launch.py
     elif [[ $option == "run" ]]; then
-        sed -i -e """/    prepare_environment()/a\    os.system\(f\'''sed -i -e ''\"s/dict()))/dict())).cuda()/g\"'' $base_dir/repositories/stable-diffusion-stability-ai/ldm/util.py''')""" $base_dir/launch.py
+        sed -i -e """/    prepare_environment()/a\    os.system\(f\'''sed -i -e ''\"s/dict()))/dict())).cuda()/g\"'' $base_dir/repositories/stable-diffusion-stability-ai/ldm/util.py''')""" $base_dir/modules/launch_utils.py
         sed -i -e 's/\"sd_model_checkpoint\"\,/\"sd_model_checkpoint\,sd_vae\,CLIP_stop_at_last_layers\"\,/g' $base_dir/modules/shared.py
     else
         echo "Error: Invalid argument '$option'"
