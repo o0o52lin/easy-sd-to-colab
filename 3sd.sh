@@ -107,7 +107,7 @@ function sed_for {
         echo "Usage: sed_for <installation|run> <base_dir>"
         return 1
     fi
-    sed -i -e 's/}" checkout {/}" checkout -f {/g' $base_dir/launch.py
+    sed -i -e 's/}" checkout {/}" checkout -f {/g' $base_dir/modules/launch_utils.py
 }
 
 function prepare_perf_tools {
