@@ -1,2 +1,2 @@
 # GuoFeng3_Lora
-https://civitai.com/api/download/models/17518
+GuoFeng3.2_Lora_light.safetensors<=https://civitai-delivery-worker-prod-2023-06-01.5ac0637cfd0766c97916cefa3764fbdf.r2.cloudflarestorage.com/75293/model/guofeng32LoraLight.Ecl3.safetensors?X-Amz-Expires=86400&response-content-disposition=attachment%3B%20filename%3D%22GuoFeng3.2_Lora_light.safetensors%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=2fea663d76bd24a496545da373d610fc/20230615/us-east-1/s3/aws4_request&X-Amz-Date=20230615T115324Z&X-Amz-SignedHeaders=host&X-Amz-Signature=fc8e573ffc1e7f5a3a420975fa03011356a3614d118fe5f471912ae6815bd722
