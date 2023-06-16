@@ -430,7 +430,7 @@ function install_json {
         echo "Usage: clips not done:$component_types"
       elif  [ "$component_types" = "esrgans" ]; then
         echo "Usage: esrgans not done:$component_types"
-      if
+      fi
 
     done
 
