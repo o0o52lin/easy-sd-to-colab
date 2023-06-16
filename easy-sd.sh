@@ -268,19 +268,16 @@ function install_json {
     for component_type in "${component_types[@]}"
     do
       json_var="JSON_${component_type^^}"
-      json_var_val=$(cat $JSON_CONFIG_FILE | jq -r ".$component_types")
+      json_var_val=$(cat $JSON_CONFIG_FILE | jq -r ".$component_type")
       var_cmd="${json_var}=\"${json_var_val}\""
       # eval $var_cmd
 
       echo "$json_var_val"
-      # 从 webui 对象中获取 branch 和 url
-      BRANCH=$(echo $json_var_val | jq -r '.branch')
-      URL=$(echo $json_var_val | jq -r '.url')
-      
-      # 输出结果
-      echo "Branch: $BRANCH"
-      echo "URL: $URL"
       if [ "$component_types" = "webui" ]; then
+        # 从 webui 对象中获取 branch 和 url
+        branch=$(echo $json_var_val | jq -r '.branch')
+        url=$(echo $json_var_val | jq -r '.url')
+        
         echo "->JSON_WEBUI:$json_var_val"
         echo "->branch:$branch"
         echo "->url:$url"
@@ -302,6 +299,7 @@ function install_json {
             base_name=$(basename $url)
           fi
           echo "->base_name: $base_name"
+          echo "->url: $url"
 
           echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
           safe_fetch $url $(assemble_target_path $type) $base_name
@@ -322,6 +320,7 @@ function install_json {
             base_name=$(basename $url)
           fi
           echo "->base_name: $base_name"
+          echo "->url: $url"
 
           echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
           safe_fetch $url $(assemble_target_path $type) $base_name
@@ -342,6 +341,7 @@ function install_json {
             base_name=$(basename $url)
           fi
           echo "->base_name: $base_name"
+          echo "->url: $url"
 
           echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
           safe_fetch $url $(assemble_target_path $type) $base_name
@@ -362,6 +362,7 @@ function install_json {
             base_name=$(basename $url)
           fi
           echo "->base_name: $base_name"
+          echo "->url: $url"
 
           echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
           safe_fetch $url $(assemble_target_path $type) $base_name
@@ -382,6 +383,7 @@ function install_json {
             base_name=$(basename $url)
           fi
           echo "->base_name: $base_name"
+          echo "->url: $url"
 
           echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
           safe_fetch $url $(assemble_target_path $type) $base_name
@@ -392,6 +394,7 @@ function install_json {
           url=${one}
           base_name=$(basename $url)
           echo "->base_name: $base_name"
+          echo "->url: $url"
           git ls-remote $url &> /dev/null
           if [[ $? -eq 0 ]]; then
             #this is a git repo
@@ -409,6 +412,7 @@ function install_json {
           url=${one}
           base_name=$(basename $url)
           echo "->base_name: $base_name"
+          echo "->url: $url"
           git ls-remote $url &> /dev/null
           if [[ $? -eq 0 ]]; then
             #this is a git repo
