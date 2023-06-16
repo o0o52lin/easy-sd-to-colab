@@ -27,7 +27,7 @@ SD webui版本：v2.3
 |命令行参数|用法|默认值|
 |---|---|---|
 |-f, --force-install|强制重新安装，可用于解决已有安装实例中的代码、文件损坏等问题|false （不强制重新安装）|
-|-l, --template-location|模型文件地址。可以是一个github repo （比如：https://github.com/xxx/yyy），也可以是你的服务器本地的目录路径（比如：/tmp/template/example-template）。|https://github.com/o0o52lin/easy-sd-to-colab|
+|-l, --template-location|模型文件地址。可以是一个github repo （ 比如：https://github.com/xxx/yyy ），也可以是你的服务器本地的目录路径（比如：/tmp/template/example-template）。|https://github.com/o0o52lin/easy-sd-to-colab|
 |-n, --template-name|模板的名称，即模板的目录名|camenduru|
 |-i, --install-path|SD的安装路径|/content/drive/MyDrive/SD|
 
