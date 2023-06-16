@@ -61,7 +61,7 @@ SD webui版本：v2.3
 !bash <(curl -sL https://raw.githubusercontent.com/o0o52lin/easy-sd-to-colab/main/easy-sd.sh)
 ```
 
-# 强制重新安装
+### 强制重新安装
 ```
 !bash <(curl -sL https://raw.githubusercontent.com/o0o52lin/easy-sd-to-colab/main/easy-sd.sh) -f
 ```
