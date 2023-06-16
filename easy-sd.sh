@@ -280,8 +280,8 @@ function run {
 }
 
 BASEPATH=/content/drive/MyDrive/SD
-TEMPLATE_LOCATION="https://github.com/AI-skimos/3line-colab-sd"
-TEMPLATE_NAME="camenduru"
+TEMPLATE_LOCATION="https://github.com/o0o52lin/easy-sd-to-colab"
+TEMPLATE_NAME="template"
 while [[ $# -gt 0 ]]
 do
     key="$1"
@@ -315,8 +315,8 @@ do
         echo "Usage: $0 [-f|--force-install] [-l|--template-location <git repo|directory>] [-n|--template-name <name>] [-i|--install-path <directory>]"
         echo "Options:"
         echo "-f, --force-install          Force reinstall"
-        echo "-l, --template-location      Location of the template repo or local directory (default: https://github.com/AI-skimos/3line-colab-sd)"
-        echo "-n, --template-name          Name of the template to install (default: templates/camenduru)"
+        echo "-l, --template-location      Location of the template repo or local directory (default: https://github.com/o0o52lin/easy-sd-to-colab)"
+        echo "-n, --template-name          Name of the template to install (default: template)"
         echo "-i, --install-path           Path to install SD (default: /content/drive/MyDrive/SD)"
         exit 1
         ;;
