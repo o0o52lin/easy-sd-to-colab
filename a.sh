@@ -1,5 +1,6 @@
 #!/bin/bash
 #判断是否安装 json解析工具“jq”
+echo  `command -v jq`
 if [ `command -v jq` ];then
     echo 'jq 已经安装'
     JSON_WEBUI="{\"webui\":{\"url\":\"http\"}}"
