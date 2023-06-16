@@ -34,9 +34,9 @@ SD webui版本：v2.3
 	</thead>
 	<tbody>
 		<tr>
-			<td>-f, --force-install</td>
-			<td>强制重新安装，可用于解决已有安装<br>实例中的代码、文件损坏等问题</td>
-			<td></td>
+			<td>-i, --install-path</td>
+			<td>SD的安装路径</td>
+			<td>/content/drive/MyDrive/SD</td>
 		</tr>
 		<tr>
 			<td>-l, --template-location</td>
@@ -49,9 +49,9 @@ SD webui版本：v2.3
 			<td>detault</td>
 		</tr>
 		<tr>
-			<td>-i, --install-path</td>
-			<td>SD的安装路径</td>
-			<td>/content/drive/MyDrive/SD</td>
+			<td>-f, --force-install</td>
+			<td>强制重新安装，可用于解决已有安装<br>实例中的代码、文件损坏等问题</td>
+			<td></td>
 		</tr>
 	</tbody>
 </table>
