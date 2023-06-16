@@ -429,11 +429,41 @@ function install_json {
       elif  [ "$component_type" = "lycoris" ]; then
         echo "Usage: lycoris not done:$component_type"
       elif  [ "$component_type" = "esrgans" ]; then
-        echo "Usage: esrgans not done:$component_type"
+        type="esrgan"
+        for one in $(echo "${json_var_val}" | jq -r '.[]'); do
+          url=${one}
+          base_name=$(basename $url)
+          echo "->base_name: $base_name"
+          echo "->url: $url"
+          git ls-remote $url &> /dev/null
+          if [[ $? -eq 0 ]]; then
+            #this is a git repo
+            branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
+            echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
+            safe_git "$url" $(assemble_target_path $type)/$base_name ${branch:+$branch}
+          else
+            echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
+            safe_fetch $url $(assemble_target_path $type) $base_name
+          fi
+        done
       elif  [ "$component_type" = "clips" ]; then
-        echo "Usage: clips not done:$component_type"
-      elif  [ "$component_type" = "esrgans" ]; then
-        echo "Usage: esrgans not done:$component_type"
+        type="clip"
+        for one in $(echo "${json_var_val}" | jq -r '.[]'); do
+          url=${one}
+          base_name=$(basename $url)
+          echo "->base_name: $base_name"
+          echo "->url: $url"
+          git ls-remote $url &> /dev/null
+          if [[ $? -eq 0 ]]; then
+            #this is a git repo
+            branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
+            echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
+            safe_git "$url" $(assemble_target_path $type)/$base_name ${branch:+$branch}
+          else
+            echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
+            safe_fetch $url $(assemble_target_path $type) $base_name
+          fi
+        done
       fi
 
     done
