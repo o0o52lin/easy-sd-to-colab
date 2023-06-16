@@ -1,4 +1,6 @@
 # GuoFeng3_Lora
 GuoFeng3.2_Lora_light.safetensors<=https://civitai.com/api/download/models/17518
-#shojovibe_v11
+# shojovibe_v11
 shojovibe_v11.safetensors<=https://civitai.com/api/download/models/16557
+# negstd1.hQ1z
+negstd1.hQ1z.safetensors<=https://civitai.com/api/download/models/55910
