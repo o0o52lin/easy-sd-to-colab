@@ -27,15 +27,15 @@ SD webui版本：v2.3
 |命令行参数|用法|默认值|
 |---|---|---|
 |-f, --force-install|强制重新安装，可用于解决已有安装实例中的代码、文件损坏等问题|false （不强制重新安装）|
-|-l, --template-location|模型文件地址。可以是一个github repo （ 比如：https://github.com/xxx/yyy ），也可以是你的服务器本地的目录路径（比如：/tmp/template/example-template）。|https://github.com/o0o52lin/easy-sd-to-colab|
-|-n, --template-name|模板的名称，即模板的目录名|camenduru|
+|-l, --template-location|模型文件地址。<br>可以是一个github repo，如：https://github.com/xxx/yyy<br>也可以是你的服务器本地的目录路径，如:/tmp/template/example-template|https://github.com/o0o52lin/easy-sd-to-colab|
+|-n, --template-name|模板的名称，即模板的目录名|detault|
 |-i, --install-path|SD的安装路径|/content/drive/MyDrive/SD|
 
 ### 默认值安装
 ```
 !bash <(curl -sL https://raw.githubusercontent.com/o0o52lin/easy-sd-to-colab/main/easy-sd.sh)
 ```
-不指定模板地址及模板名称,默认安装本项目template模板. (https://github.com/o0o52lin/easy-sd-to-colab/tree/main/template)
+不指定模板地址及模板名称,默认安装本项目templates目录下的default模板. (https://github.com/o0o52lin/easy-sd-to-colab/tree/main/templates/default)
 
 ### 安装指定github repo的模板
 你可以通过fork本项目,或者自己建立github项目来存储你的模板文件.
@@ -58,7 +58,7 @@ SD webui版本：v2.3
 
 |模板文件|内容|类型|例子|
 |---|---|---|---|
-|webui.txt|指定要安装的SD WebUI版本。 可选：在#后指定分支。注意：写多个webui，只有第一个会生效|必须是git repo地址|https://github.com/camenduru/stable-diffusion-webui#v2.1|
+|webui.txt|指定要安装的SD WebUI版本。 可选：在#后指定分支。注意：写多个webui，只有第一个会生效|必须是git repo地址|https://github.com/camenduru/stable-diffusion-webui#v2.3|
 |extensions.txt|指定要安装的插件。|必须是git repo地址|https://github.com/dtlnor/stable-diffusion-webui-localization-zh_CN|
 |scripts.txt|额外需要安装在scripts目录下的额外脚本文件。|均可|https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-scripts/main/run_n_times.py|
 |embeddings.txt|需要下载安装的embeddings。|均可|
