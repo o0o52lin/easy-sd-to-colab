@@ -1,0 +1,98 @@
+{
+   "webui": {
+      "branch": "master",
+      "url":"https://github.com/camenduru/stable-diffusion-webui"
+   },
+   "checkpoints": [
+      {
+         "filename":"majicmixRealistic_v6.safetensors",
+         "url": "https://civitai.com/api/download/models/94640"
+      }
+   ],
+   "controlnets": [
+      {
+         "filename":"control_v11f1e_sd15_tile_fp16.safetensors",
+         "url": "https://huggingface.co/ckpt/ControlNet-v1-1/resolve/main/control_v11f1e_sd15_tile_fp16.safetensors"
+      },
+      {
+         "filename":"control_v11p_sd15_canny_fp16.safetensors",
+         "url": "https://huggingface.co/ckpt/ControlNet-v1-1/resolve/main/control_v11p_sd15_canny_fp16.safetensors"
+      },
+      {
+         "filename":"control_v11p_sd15_openpose_fp16.safetensors",
+         "url": "https://huggingface.co/ckpt/ControlNet-v1-1/resolve/main/control_v11p_sd15_openpose_fp16.safetensors"
+      },
+      {
+         "filename":"control_v11p_sd15_seg_fp16.safetensors",
+         "url": "https://huggingface.co/ckpt/ControlNet-v1-1/resolve/main/control_v11p_sd15_seg_fp16.safetensors"
+      }
+   ],
+   "embeddings": [
+      {
+         "filename":"",
+         "url": "https://huggingface.co/embed/negative"
+      },
+      {
+         "filename":"",
+         "url": "https://huggingface.co/embed/lora"
+      },
+      {
+         "filename":"badPictures.Vlw2.pt",
+         "url": "https://civitai.com/api/download/models/66043"
+      },
+      {
+         "filename":"negative_hand-neg.pt",
+         "url": "https://civitai.com/api/download/models/60938"
+      }
+   ],
+   "extensions": [
+      "https://github.com/Physton/sd-webui-prompt-all-in-one",
+      "https://github.com/dtlnor/stable-diffusion-webui-localization-zh_CN",
+      "https://github.com/deforum-art/deforum-for-automatic1111-webui",
+      "https://github.com/camenduru/stable-diffusion-webui-images-browser",
+      "https://github.com/camenduru/stable-diffusion-webui-huggingface",
+      "https://github.com/camenduru/sd-civitai-browser",
+      "https://github.com/kohya-ss/sd-webui-additional-networks",
+      "https://github.com/Mikubill/sd-webui-controlnet",
+      "https://github.com/fkunn1326/openpose-editor",
+      "https://github.com/jexom/sd-webui-depth-lib",
+      "https://github.com/hnmr293/posex",
+      "https://github.com/nonnonstop/sd-webui-3d-open-pose-editor",
+      "https://github.com/camenduru/sd-webui-tunnels",
+      "https://github.com/etherealxx/batchlinks-webui",
+      "https://github.com/camenduru/stable-diffusion-webui-catppuccin",
+      "https://github.com/KohakuBlueleaf/a1111-sd-webui-locon",
+      "https://github.com/AUTOMATIC1111/stable-diffusion-webui-rembg",
+      "https://github.com/ashen-sensored/stable-diffusion-webui-two-shot",
+      "https://github.com/camenduru/sd_webui_stealth_pnginfo",
+      "https://github.com/thomasasfk/sd-webui-aspect-ratio-helper",
+      "https://github.com/AI-skimos/sd-webui-prompt-sr-range"
+   ],
+   "loras": [
+      {
+         "filename":"GuoFeng3.2_Lora_light.safetensors",
+         "url": "https://civitai.com/api/download/models/17518"
+      },
+      {
+         "filename":"shojovibe_v11.safetensors",
+         "url": "https://civitai.com/api/download/models/16557"
+      },
+      {
+         "filename":"negstd1.hQ1z.safetensors",
+         "url": "https://civitai.com/api/download/models/55910"
+      }
+   ],
+   "scripts": [
+      "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-scripts/main/run_n_times.py"
+   ],
+   "vaes": [
+      {
+         "filename":"vae-ft-mse-840000-ema-pruned.ckpt",
+         "url": "https://huggingface.co/Yukihime256/840000/resolve/main/vae-ft-mse-840000-ema-pruned.ckpt"
+      }
+   ],
+   "lycoris":[],
+   "clips":[],
+   "hypernetworks":[],
+   "esrgans":[]
+}
