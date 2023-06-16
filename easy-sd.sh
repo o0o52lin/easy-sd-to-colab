@@ -185,7 +185,47 @@ function assemble_target_path {
         ;;
     esac
 }
-
+function install_webui {
+    if [ "$#" -ne 1 ]; then
+      echo "Usage: install_from_template <config_path>"
+      return 1
+    fi
+    local config_path=$1
+    if [[ -f $config_path ]]; then
+      mapfile -t lines < $config_path
+      for line in "${lines[@]}"
+      do
+          echo "->Processing template config line: $line"
+          trimmed_url=$(echo "$line" | tr -d ' ' | cut -d "#" -f 1)
+          # 判断file<=url配置
+          if [[ $trimmed_url == *"<="* ]]; then
+            base_name=${trimmed_url%%<=*}
+            trimmed_url=${trimmed_url#*<=}
+          else
+            base_name=$(basename $trimmed_url)
+          fi
+          echo "->base_name: $base_name"
+          if [[ ! -z $trimmed_url ]]; then
+            type=$(basename $config_path | cut -d "." -f 1)
+            git ls-remote $trimmed_url &> /dev/null
+            if [[ $? -eq 0 ]]; then
+              #this is a git repo
+              branch=$(echo "$line" | grep -q "#" && echo "$line" | cut -d "#" -f 2)
+              echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
+              if [[ $type == "webui" ]]; then
+                safe_git "$trimmed_url" $(assemble_target_path $type) ${branch:+$branch}
+                break
+              else
+                safe_git "$trimmed_url" $(assemble_target_path $type)/$base_name ${branch:+$branch}
+              fi
+            else
+              echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
+              safe_fetch $trimmed_url $(assemble_target_path $type) $base_name
+            fi
+          fi
+      done
+    fi
+}
 function install_from_template {
     if [ "$#" -ne 1 ]; then
       echo "Usage: install_from_template <config_path>"
@@ -262,6 +302,38 @@ function install {
     sed_for installation $BASEPATH
     cd $BASEPATH && python launch.py --skip-torch-cuda-test && echo "Installation Completed" > $BASEPATH/.install_status
 }
+# 获取指定字段的值
+function get_config_value() {
+    local field=$1
+    local value=$(echo $config | jq -r ".$field")
+    echo $value
+}
+
+function install_json {
+    #Prepare runtime
+    component_types=( "webui" "extensions" "scripts" "embeddings" "esrgans" "checkpoints" "hypernetworks" "loras" "lycoris" "vaes" "clips" "controlnets" )
+    for component_type in "${component_types[@]}"
+    do
+      val=$(get_config_value "$component_type")
+      template_path=$1
+      config_path=$template_path/$component_type.txt
+      echo $config_path
+      if [[ -f $config_path ]]; then
+        install_from_template $config_path
+      fi
+    done
+
+  json_var="JSON_${component_type^^}"
+  json_var_val=$(get_config_value "$component_type")
+  var_cmd="${json_var}=\"${json_var_val}\""
+  eval $var_cmd
+
+    reset_repos $BASEPATH all
+
+    #Install Dependencies
+    sed_for installation $BASEPATH
+    cd $BASEPATH && python launch.py --skip-torch-cuda-test && echo "Installation Completed" > $BASEPATH/.install_status
+}
 
 function run {
     #Install google perf tools
@@ -281,7 +353,22 @@ function run {
 
 BASEPATH=/content/drive/MyDrive/SD
 TEMPLATE_LOCATION="https://github.com/o0o52lin/easy-sd-to-colab"
+TEMPLATE_TYPE="file"
 TEMPLATE_NAME="default"
+
+JSON_WEBUI=false
+JSON_EXTENSIONS=false
+JSON_SCRIPTS=false
+JSON_EMBEDDINGS=false
+JSON_ESRGANS=false
+JSON_CHECKPOINTS=false
+JSON_HYPERNETWORKS=false
+JSON_LORAS=false
+JSON_LYCORIS=false
+JSON_VAES=false
+JSON_CLIPS=false
+JSON_CONTROLNETS=false
+
 while [[ $# -gt 0 ]]
 do
     key="$1"
@@ -306,6 +393,11 @@ do
         shift
         shift
         ;;
+        -t|--template-type)
+        TEMPLATE_TYPE="$2"
+        shift
+        shift
+        ;;
         -i|--install-path)
         BASEPATH="$2"
         shift
@@ -317,6 +409,7 @@ do
         echo "-f, --force-install          Force reinstall"
         echo "-l, --template-location      Location of the template repo or local directory (default: https://github.com/o0o52lin/easy-sd-to-colab)"
         echo "-n, --template-name          Name of the template to install (default: templates/default)"
+        echo "-t, --template-type          Type of the template (default: file)"
         echo "-i, --install-path           Path to install SD (default: /content/drive/MyDrive/SD)"
         exit 1
         ;;
@@ -334,23 +427,49 @@ else
   TEMPLATE_PATH=$TEMPLATE_LOCATION
 fi
 
-echo $(find "$TEMPLATE_PATH" -maxdepth 2 -type d -name "$TEMPLATE_NAME" -print -quit)
-FINAL_PATH=$(find "$TEMPLATE_PATH" -maxdepth 2 -type d -name "$TEMPLATE_NAME" -print -quit)
-if [ -z $FINAL_PATH ]; then
-  echo "Error: $TEMPLATE_PATH does not contain a template named $TEMPLATE_NAME. Please confirm you have correctly specified template location and template name."
-  exit 1
+if [[ "$TEMPLATE_NAME" == *.json ]]; then
+  TEMPLATE_NAME=${TEMPLATE_NAME%.json}
 fi
+TEMPLATE_NAME="$TEMPLATE_NAME.json"
 
-echo "FORCE_INSTALL: $FORCE_INSTALL"
-echo "TEMPLATE_LOCATION: $TEMPLATE_LOCATION"
-echo "TEMPLATE_NAME: $TEMPLATE_NAME"
-echo "FINAL_PATH: $FINAL_PATH"
+if [ "$TEMPLATE_TYPE" = "file" ]; then
+  echo $(find "$TEMPLATE_PATH" -maxdepth 2 -type f -name "$TEMPLATE_NAME" -print -quit)
+  FINAL_JSON=$(find "$TEMPLATE_PATH" -maxdepth 2 -type f -name "$TEMPLATE_NAME" -print -quit)
+  if [ -z $FINAL_JSON ]; then
+    echo "Error: $TEMPLATE_PATH does not contain a template named $TEMPLATE_NAME. Please confirm you have correctly specified template location and template name."
+    exit 1
+  fi
 
-#Update packages
-apt -y update -qq && apt -y install -qq unionfs-fuse libcairo2-dev pkg-config python3-dev aria2
+  echo "FORCE_INSTALL: $FORCE_INSTALL"
+  echo "TEMPLATE_LOCATION: $TEMPLATE_LOCATION"
+  echo "TEMPLATE_NAME: $TEMPLATE_NAME"
+  echo "FINAL_JSON: $FINAL_JSON"
 
-if [ "$FORCE_INSTALL" = true ] || [ ! -e "$BASEPATH/.install_status" ] || ! grep -qs "Installation Completed" "$BASEPATH/.install_status"; then
-    install $FINAL_PATH
+  #Update packages
+  apt -y update -qq && apt -y install -qq unionfs-fuse libcairo2-dev pkg-config python3-dev aria2
+
+  if [ "$FORCE_INSTALL" = true ] || [ ! -e "$BASEPATH/.install_status" ] || ! grep -qs "Installation Completed" "$BASEPATH/.install_status"; then
+      install_json $FINAL_JSON
+  fi
+else
+  echo $(find "$TEMPLATE_PATH" -maxdepth 2 -type d -name "$TEMPLATE_NAME" -print -quit)
+  FINAL_PATH=$(find "$TEMPLATE_PATH" -maxdepth 2 -type d -name "$TEMPLATE_NAME" -print -quit)
+  if [ -z $FINAL_PATH ]; then
+    echo "Error: $TEMPLATE_PATH does not contain a template named $TEMPLATE_NAME. Please confirm you have correctly specified template location and template name."
+    exit 1
+  fi
+
+  echo "FORCE_INSTALL: $FORCE_INSTALL"
+  echo "TEMPLATE_LOCATION: $TEMPLATE_LOCATION"
+  echo "TEMPLATE_NAME: $TEMPLATE_NAME"
+  echo "FINAL_PATH: $FINAL_PATH"
+
+  #Update packages
+  apt -y update -qq && apt -y install -qq unionfs-fuse libcairo2-dev pkg-config python3-dev aria2
+
+  if [ "$FORCE_INSTALL" = true ] || [ ! -e "$BASEPATH/.install_status" ] || ! grep -qs "Installation Completed" "$BASEPATH/.install_status"; then
+      install $FINAL_PATH
+  fi
 fi
 
 run
