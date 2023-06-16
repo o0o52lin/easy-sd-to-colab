@@ -302,8 +302,11 @@ function install_webui {
     fi
     branch=$(echo $JSON_WEBUI | jq -r '.webui.branch')
     url=$(echo $JSON_WEBUI | jq -r '.webui.url')
+    echo "->JSON_WEBUI:$JSON_WEBUI"
+    echo "->branch:$branch"
+    echo "->url:$url"
     echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
-    safe_git "$trimmed_url" $(assemble_target_path $type) ${branch:+$branch}
+    safe_git "$url" $(assemble_target_path $type) ${branch:+$branch}
 }
 function install_array_config {
   if [[ -z "$1" ]]; then
