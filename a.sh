@@ -1,10 +1,11 @@
 #!/bin/bash
-if ! command -v jq &> /dev/null
-then
-  echo "jq not found, installing..."
-  apt -y install jq
+#判断是否安装 json解析工具“jq”
+if [ `command -v jq` ];then
+    echo 'jq 已经安装'
+    JSON_WEBUI="{\"webui\":{\"url\":\"http\"}}"
+    echo $("$JSON_WEBUI" | jq -r '.webui.url')
 else
-  echo "jq ok"
+    echo 'jq 未安装,开始安装json解析工具'
+    #安装jq
+    apt -y install jq
 fi
-JSON_WEBUI="{\"webui\":{\"url\":\"http\"}}"
-echo $("$JSON_WEBUI" | jq -r '.webui.url')
