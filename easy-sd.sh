@@ -261,21 +261,14 @@ function install {
     sed_for installation $BASEPATH
     cd $BASEPATH && python launch.py --skip-torch-cuda-test && echo "Installation Completed" > $BASEPATH/.install_status
 }
-# 获取指定字段的值
-function get_config_value() {
-    local field=$1
-    local value=$(echo $JSON_CONFIG | jq -r ".$field")
-    echo $value
-}
 
 function install_json {
     #Prepare runtime
-    JSON_CONFIG=$(cat "$1")
     component_types=( "webui" "extensions" "scripts" "embeddings" "esrgans" "checkpoints" "hypernetworks" "loras" "lycoris" "vaes" "clips" "controlnets" )
     for component_type in "${component_types[@]}"
     do
       json_var="JSON_${component_type^^}"
-      json_var_val=$(get_config_value "$component_type")
+      json_var_val=$(cat $JSON_CONFIG_FILE | jq -r ".$component_types")
       var_cmd="${json_var}=\"${json_var_val}\""
       eval $var_cmd
 
@@ -455,6 +448,7 @@ export JSON_VAES=false
 export JSON_CLIPS=false
 export JSON_CONTROLNETS=false
 export JSON_CONFIG=""
+export JSON_CONFIG_FILE=""
 
 while [[ $# -gt 0 ]]
 do
@@ -521,8 +515,8 @@ TEMPLATE_NAME="$TEMPLATE_NAME.json"
 
 if [ "$TEMPLATE_TYPE" = "file" ]; then
   echo $(find "$TEMPLATE_PATH" -maxdepth 2 -type f -name "$TEMPLATE_NAME" -print -quit)
-  FINAL_JSON=$(find "$TEMPLATE_PATH" -maxdepth 2 -type f -name "$TEMPLATE_NAME" -print -quit)
-  if [ -z $FINAL_JSON ]; then
+  JSON_CONFIG_FILE=$(find "$TEMPLATE_PATH" -maxdepth 2 -type f -name "$TEMPLATE_NAME" -print -quit)
+  if [ -z $JSON_CONFIG_FILE ]; then
     echo "Error: $TEMPLATE_PATH does not contain a template named $TEMPLATE_NAME. Please confirm you have correctly specified template location and template name."
     exit 1
   fi
@@ -530,7 +524,7 @@ if [ "$TEMPLATE_TYPE" = "file" ]; then
   echo "FORCE_INSTALL: $FORCE_INSTALL"
   echo "TEMPLATE_LOCATION: $TEMPLATE_LOCATION"
   echo "TEMPLATE_NAME: $TEMPLATE_NAME"
-  echo "FINAL_JSON: $FINAL_JSON"
+  echo "FINAL_JSON: $JSON_CONFIG_FILE"
 
   #Update packages
   apt -y update -qq && apt -y install -qq unionfs-fuse libcairo2-dev pkg-config python3-dev aria2
@@ -542,7 +536,7 @@ if [ "$TEMPLATE_TYPE" = "file" ]; then
   fi
 
   if [ "$FORCE_INSTALL" = true ] || [ ! -e "$BASEPATH/.install_status" ] || ! grep -qs "Installation Completed" "$BASEPATH/.install_status"; then
-      install_json $FINAL_JSON
+      install_json
   fi
 else
   echo $(find "$TEMPLATE_PATH" -maxdepth 2 -type d -name "$TEMPLATE_NAME" -print -quit)
