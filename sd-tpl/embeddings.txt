@@ -1,2 +1,4 @@
 https://huggingface.co/embed/negative
 https://huggingface.co/embed/lora
+badPictures.Vlw2.pt<=https://civitai.com/api/download/models/66043
+negative_hand-neg.pt<=https://civitai.com/api/download/models/60938
