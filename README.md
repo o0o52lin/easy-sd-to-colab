@@ -56,24 +56,29 @@ SD webui版本：v2.3
 	</tbody>
 </table>
 
-### 安装示例
+### 默认安装安装
 ```
-# 默认安装
 !bash <(curl -sL https://raw.githubusercontent.com/o0o52lin/easy-sd-to-colab/main/easy-sd.sh)
+```
 
 # 强制重新安装
-!bash <(curl -sL https://raw.githubusercontent.com/o0o52lin/easy-sd-to-colab/main/easy-sd.sh) -f
-
-# 安装指定github repo的模板
-# 你可以通过fork本项目,或者自己建立github项目来存储你的模板文件
-!bash <(curl -sL https://raw.githubusercontent.com/o0o52lin/easy-sd-to-colab/main/easy-sd.sh) -l https://github.com/xxx/yyy -n example-template
-# 该命令会克隆https://github.com/xxx/yyy 项目并使用其中的example-template目录下的模板文件。
-
-# 从Google Drive指定模板文件
-# 当使用挂在GDrive安装方式时，可以指定一个谷歌云盘中的模板目录。
-!bash <(curl -sL https://raw.githubusercontent.com/o0o52lin/easy-sd-to-colab/main/easy-sd.sh) -n vanwise -l /content/drive/MyDrive/template
-# 该命令会去你的谷歌云盘（默认挂载点/content/drive/MyDrive)下的template目录中，使用vanwise目录下的模板文件。
 ```
+!bash <(curl -sL https://raw.githubusercontent.com/o0o52lin/easy-sd-to-colab/main/easy-sd.sh) -f
+```
+
+### 安装指定github repo的模板
+你可以通过fork本项目,或者自己建立github项目来存储你的模板文件
+```
+!bash <(curl -sL https://raw.githubusercontent.com/o0o52lin/easy-sd-to-colab/main/easy-sd.sh) -l https://github.com/xxx/yyy -n example-template
+```
+该命令会克隆https://github.com/xxx/yyy 项目并使用其中的example-template目录下的模板文件。
+
+### 从Google Drive指定模板文件
+当使用挂在GDrive安装方式时，可以指定一个谷歌云盘中的模板目录。
+```
+!bash <(curl -sL https://raw.githubusercontent.com/o0o52lin/easy-sd-to-colab/main/easy-sd.sh) -n vanwise -l /content/drive/MyDrive/template
+```
+该命令会去你的谷歌云盘（默认挂载点/content/drive/MyDrive)下的template目录中，使用vanwise目录下的模板文件。
 
 不指定模板地址及模板名称,默认安装本项目templates目录下的default模板. (https://github.com/o0o52lin/easy-sd-to-colab/tree/main/templates/default)
 
