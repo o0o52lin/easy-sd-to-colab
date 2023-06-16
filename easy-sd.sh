@@ -146,37 +146,37 @@ function assemble_target_path {
       webui)
         echo $BASEPATH
         ;;
-      extension)
+      extension|extensions)
         echo $BASEPATH/extensions
         ;;
-      script)
+      script|scripts)
         echo $BASEPATH/scripts
         ;;
-      embedding)
+      embedding|embeddings)
         echo $BASEPATH/embeddings
         ;;
-      esrgan)
+      esrgan|ESRGAN_models)
         echo $BASEPATH/models/ESRGAN
         ;;
-      checkpoint)
+      checkpoint|checkpoints)
         echo $BASEPATH/models/Stable-diffusion
         ;;
-      hypernetwork)
+      hypernetwork|hypernetworks)
         echo $BASEPATH/models/hypernetworks
         ;;
-      lora)
+      lora|loras)
         echo $BASEPATH/models/Lora
         ;;
-      lycori)
+      lycori|lycoris)
         echo $BASEPATH/models/LyCORIS
         ;;
-      vae)
+      vae|vaes)
         echo $BASEPATH/models/VAE
         ;;
-      clip)
+      clip|clips)
         echo $BASEPATH/models/CLIP
         ;;
-      controlnet)
+      controlnet|cn_models)
         echo $BASEPATH/extensions/sd-webui-controlnet/models
         ;;
       *)
