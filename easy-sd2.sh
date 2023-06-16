@@ -436,18 +436,18 @@ TEMPLATE_LOCATION="https://github.com/o0o52lin/easy-sd-to-colab"
 TEMPLATE_TYPE="file"
 TEMPLATE_NAME="default"
 
-JSON_WEBUI=false
-JSON_EXTENSIONS=false
-JSON_SCRIPTS=false
-JSON_EMBEDDINGS=false
-JSON_ESRGANS=false
-JSON_CHECKPOINTS=false
-JSON_HYPERNETWORKS=false
-JSON_LORAS=false
-JSON_LYCORIS=false
-JSON_VAES=false
-JSON_CLIPS=false
-JSON_CONTROLNETS=false
+export JSON_WEBUI=false
+export JSON_EXTENSIONS=false
+export JSON_SCRIPTS=false
+export JSON_EMBEDDINGS=false
+export JSON_ESRGANS=false
+export JSON_CHECKPOINTS=false
+export JSON_HYPERNETWORKS=false
+export JSON_LORAS=false
+export JSON_LYCORIS=false
+export JSON_VAES=false
+export JSON_CLIPS=false
+export JSON_CONTROLNETS=false
 
 while [[ $# -gt 0 ]]
 do
