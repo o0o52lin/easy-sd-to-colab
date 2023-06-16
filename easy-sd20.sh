@@ -274,6 +274,7 @@ function install_json {
 
       echo "$json_var_val"
       if [ "$component_type" = "webui" ]; then
+        type="webui"
         # 从 webui 对象中获取 branch 和 url
         branch=$(echo $json_var_val | jq -r '.branch')
         url=$(echo $json_var_val | jq -r '.url')
