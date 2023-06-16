@@ -282,6 +282,8 @@ function install_json {
       var_cmd="${json_var}=\"${json_var_val}\""
       eval $var_cmd
 
+      echo "$JSON_EBUI"
+
       func_var="install_${component_type}"
       func_var=$(echo $func_var | tr '[:upper:]' '[:lower:]')
       eval $func_var
