@@ -273,7 +273,7 @@ function install_json {
       # eval $var_cmd
 
       echo "$json_var_val"
-      if [ "$component_types" = "webui" ]; then
+      if [ "$component_type" = "webui" ]; then
         # 从 webui 对象中获取 branch 和 url
         branch=$(echo $json_var_val | jq -r '.branch')
         url=$(echo $json_var_val | jq -r '.url')
@@ -283,7 +283,7 @@ function install_json {
         echo "->url:$url"
         echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
         safe_git "$trimmed_url" $(assemble_target_path $type) ${branch:+$branch}
-      elif  [ "$component_types" = "checkpoints" ]; then
+      elif  [ "$component_type" = "checkpoints" ]; then
         type="checkpoint"
         # 使用 jq 解析 JSON 数据
         for one in $(echo "${array_object}" | jq -r '.[] | @base64'); do
@@ -304,7 +304,7 @@ function install_json {
           echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
           safe_fetch $url $(assemble_target_path $type) $base_name
         done
-      elif  [ "$component_types" = "embeddings" ]; then
+      elif  [ "$component_type" = "embeddings" ]; then
         type="embedding"
         # 使用 jq 解析 JSON 数据
         for one in $(echo "${array_object}" | jq -r '.[] | @base64'); do
@@ -325,7 +325,7 @@ function install_json {
           echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
           safe_fetch $url $(assemble_target_path $type) $base_name
         done
-      elif  [ "$component_types" = "loras" ]; then
+      elif  [ "$component_type" = "loras" ]; then
         type="lora"
         # 使用 jq 解析 JSON 数据
         for one in $(echo "${array_object}" | jq -r '.[] | @base64'); do
@@ -346,7 +346,7 @@ function install_json {
           echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
           safe_fetch $url $(assemble_target_path $type) $base_name
         done
-      elif  [ "$component_types" = "vaes" ]; then
+      elif  [ "$component_type" = "vaes" ]; then
         type="vae"
         # 使用 jq 解析 JSON 数据
         for one in $(echo "${array_object}" | jq -r '.[] | @base64'); do
@@ -367,7 +367,7 @@ function install_json {
           echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
           safe_fetch $url $(assemble_target_path $type) $base_name
         done
-      elif  [ "$component_types" = "controlnets" ]; then
+      elif  [ "$component_type" = "controlnets" ]; then
         type="controlnet"
         # 使用 jq 解析 JSON 数据
         for one in $(echo "${array_object}" | jq -r '.[] | @base64'); do
@@ -388,7 +388,7 @@ function install_json {
           echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
           safe_fetch $url $(assemble_target_path $type) $base_name
         done
-      elif  [ "$component_types" = "extensions" ]; then
+      elif  [ "$component_type" = "extensions" ]; then
         type="extension"
         for one in $(echo "${json_var_val}" | jq -r '.[]'); do
           url=${one}
@@ -406,7 +406,7 @@ function install_json {
             safe_fetch $url $(assemble_target_path $type) $base_name
           fi
         done
-      elif  [ "$component_types" = "scripts" ]; then
+      elif  [ "$component_type" = "scripts" ]; then
         type="script"
         for one in $(echo "${json_var_val}" | jq -r '.[]'); do
           url=${one}
@@ -424,15 +424,15 @@ function install_json {
             safe_fetch $url $(assemble_target_path $type) $base_name
           fi
         done
-      elif  [ "$component_types" = "hypernetworks" ]; then
+      elif  [ "$component_type" = "hypernetworks" ]; then
         echo "Usage: hypernetworks not done:$component_types"
-      elif  [ "$component_types" = "lycoris" ]; then
+      elif  [ "$component_type" = "lycoris" ]; then
         echo "Usage: lycoris not done:$component_types"
-      elif  [ "$component_types" = "esrgans" ]; then
+      elif  [ "$component_type" = "esrgans" ]; then
         echo "Usage: esrgans not done:$component_types"
-      elif  [ "$component_types" = "clips" ]; then
+      elif  [ "$component_type" = "clips" ]; then
         echo "Usage: clips not done:$component_types"
-      elif  [ "$component_types" = "esrgans" ]; then
+      elif  [ "$component_type" = "esrgans" ]; then
         echo "Usage: esrgans not done:$component_types"
       fi
 
