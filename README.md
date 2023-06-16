@@ -26,10 +26,10 @@ SD webui版本：v2.3
 可以通过在文本文件中列出模型、插件、脚本等的下载地址，来深度定制化一键部署的SD。
 | 命令行参数 | 参数缩写 | 用法 | 默认值 |
 |---|---|---|---|
-| <td style="width:25%">--force-install</td> |-f|强制重新安装，可用于解决已有安装<br>实例中的代码、文件损坏等问题|false （不强制重新安装）|
-| <td style="width:25%">--template-location</td> |-l|模型文件地址<br>可以是一个github repo<br>如：https://github.com/xxx/yyy<br><br>也可以是你的服务器本地的目录路径，如:/tmp/template/example-template|https://github.com/o0o52lin/easy-sd-to-colab|
-| <td style="width:25%">--template-name</td> |-n|模板的名称，即模板的目录名|detault|
-| <td style="width:25%">--install-path</td> |-i|SD的安装路径|/content/drive/MyDrive/SD|
+| <tdivd style="width:100px">--force-install</div> |-f|强制重新安装，可用于解决已有安装<br>实例中的代码、文件损坏等问题|false （不强制重新安装）|
+| <div style="width:100px">--template-location</div> |-l|模型文件地址<br>可以是一个github repo<br>如：https://github.com/xxx/yyy<br><br>也可以是你的服务器本地的目录路径，如:/tmp/template/example-template|https://github.com/o0o52lin/easy-sd-to-colab|
+| <div style="width:100px">--template-name</div> |-n|模板的名称，即模板的目录名|detault|
+| <div style="width:100px">--install-path</div> |-i|SD的安装路径|/content/drive/MyDrive/SD|
 
 ### 默认值安装
 ```
