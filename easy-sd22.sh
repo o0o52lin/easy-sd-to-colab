@@ -283,7 +283,7 @@ function install_json {
         echo "->branch:$branch"
         echo "->url:$url"
         echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
-        safe_git "$trimmed_url" $(assemble_target_path $type) ${branch:+$branch}
+        safe_git "$url" $(assemble_target_path $type) ${branch:+$branch}
       elif  [ "$component_type" = "checkpoints" ]; then
         type="checkpoint"
         # 使用 jq 解析 JSON 数据
