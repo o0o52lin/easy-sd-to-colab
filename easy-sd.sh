@@ -710,12 +710,13 @@ else
   TEMPLATE_PATH=$TEMPLATE_LOCATION
 fi
 
-if [[ "$TEMPLATE_NAME" == *.json ]]; then
-  TEMPLATE_NAME=${TEMPLATE_NAME%.json}
-fi
-TEMPLATE_NAME="$TEMPLATE_NAME.json"
-
 if [ "$TEMPLATE_TYPE" = "file" ]; then
+
+  if [[ "$TEMPLATE_NAME" == *.json ]]; then
+    TEMPLATE_NAME=${TEMPLATE_NAME%.json}
+  fi
+  TEMPLATE_NAME="$TEMPLATE_NAME.json"
+
   echo $(find "$TEMPLATE_PATH" -maxdepth 2 -type f -name "$TEMPLATE_NAME" -print -quit)
   JSON_CONFIG_FILE=$(find "$TEMPLATE_PATH" -maxdepth 2 -type f -name "$TEMPLATE_NAME" -print -quit)
   if [ -z $JSON_CONFIG_FILE ]; then
