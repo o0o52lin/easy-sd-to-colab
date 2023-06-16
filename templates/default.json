@@ -45,6 +45,9 @@
          "url": "https://civitai.com/api/download/models/60938"
       }
    ],
+   "scripts": [
+      "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-scripts/main/run_n_times.py"
+   ],
    "extensions": [
       "https://github.com/Physton/sd-webui-prompt-all-in-one",
       "https://github.com/dtlnor/stable-diffusion-webui-localization-zh_CN",
@@ -81,9 +84,6 @@
          "filename":"negstd1.hQ1z.safetensors",
          "url": "https://civitai.com/api/download/models/55910"
       }
-   ],
-   "scripts": [
-      "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-scripts/main/run_n_times.py"
    ],
    "vaes": [
       {

@@ -185,47 +185,6 @@ function assemble_target_path {
         ;;
     esac
 }
-function install_webui {
-    if [ "$#" -ne 1 ]; then
-      echo "Usage: install_from_template <config_path>"
-      return 1
-    fi
-    local config_path=$1
-    if [[ -f $config_path ]]; then
-      mapfile -t lines < $config_path
-      for line in "${lines[@]}"
-      do
-          echo "->Processing template config line: $line"
-          trimmed_url=$(echo "$line" | tr -d ' ' | cut -d "#" -f 1)
-          # 判断file<=url配置
-          if [[ $trimmed_url == *"<="* ]]; then
-            base_name=${trimmed_url%%<=*}
-            trimmed_url=${trimmed_url#*<=}
-          else
-            base_name=$(basename $trimmed_url)
-          fi
-          echo "->base_name: $base_name"
-          if [[ ! -z $trimmed_url ]]; then
-            type=$(basename $config_path | cut -d "." -f 1)
-            git ls-remote $trimmed_url &> /dev/null
-            if [[ $? -eq 0 ]]; then
-              #this is a git repo
-              branch=$(echo "$line" | grep -q "#" && echo "$line" | cut -d "#" -f 2)
-              echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
-              if [[ $type == "webui" ]]; then
-                safe_git "$trimmed_url" $(assemble_target_path $type) ${branch:+$branch}
-                break
-              else
-                safe_git "$trimmed_url" $(assemble_target_path $type)/$base_name ${branch:+$branch}
-              fi
-            else
-              echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
-              safe_fetch $trimmed_url $(assemble_target_path $type) $base_name
-            fi
-          fi
-      done
-    fi
-}
 function install_from_template {
     if [ "$#" -ne 1 ]; then
       echo "Usage: install_from_template <config_path>"
@@ -317,22 +276,140 @@ function install_json {
       val=$(get_config_value "$component_type")
       template_path=$1
       config_path=$template_path/$component_type.txt
-      echo $config_path
-      if [[ -f $config_path ]]; then
-        install_from_template $config_path
-      fi
-    done
 
-  json_var="JSON_${component_type^^}"
-  json_var_val=$(get_config_value "$component_type")
-  var_cmd="${json_var}=\"${json_var_val}\""
-  eval $var_cmd
+      json_var="JSON_${component_type^^}"
+      json_var_val=$(get_config_value "$component_type")
+      var_cmd="${json_var}=\"${json_var_val}\""
+      eval $var_cmd
+
+      func_var="install_${component_type}"
+      func_var=$(echo $func_var | tr '[:upper:]' '[:lower:]')
+      eval $func_var
+    done
 
     reset_repos $BASEPATH all
 
     #Install Dependencies
     sed_for installation $BASEPATH
     cd $BASEPATH && python launch.py --skip-torch-cuda-test && echo "Installation Completed" > $BASEPATH/.install_status
+}
+
+function install_webui {
+    type="webui"
+    if [ "$JSON_WEBUI" = false ]; then
+      echo "Error: $FINAL_JSON not contain $type."
+      return 1
+    fi
+    branch=$(echo $JSON_WEBUI | jq -r '.webui.branch')
+    url=$(echo $JSON_WEBUI | jq -r '.webui.url')
+    echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
+    safe_git "$trimmed_url" $(assemble_target_path $type) ${branch:+$branch}
+}
+function install_array_config {
+  if [[ -z "$1" ]]; then
+    echo "Error: install_array_object first param is empty."
+    return 1
+  fi
+  type="$1"
+  array_object="$2"
+  for one in $(echo "${array_object}" | jq -r '.[]'); do
+    url=${one}
+    base_name=$(basename $url)
+    echo "->base_name: $base_name"
+    git ls-remote $url &> /dev/null
+    if [[ $? -eq 0 ]]; then
+      #this is a git repo
+      branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
+      echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
+      safe_git "$url" $(assemble_target_path $type)/$base_name ${branch:+$branch}
+    else
+      echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
+      safe_fetch $url $(assemble_target_path $type) $base_name
+    fi
+  done
+}
+function install_array_object_config {
+  if [[ -z "$1" ]]; then
+    echo "Error: install_array_object first param is empty."
+    return 1
+  fi
+  type="$1"
+  array_object="$2"
+  # 使用 jq 解析 JSON 数据
+  for one in $(echo "${array_object}" | jq -r '.[] | @base64'); do
+    # 解码 base64 编码的 JSON 数据
+    _jq() {
+        echo "${one}" | base64 --decode | jq -r "${1}"
+    }
+
+    base_name=$(_jq '.filename')
+    url=$(_jq '.url')
+
+    if [[ ! -z $base_name ]]; then
+      base_name=$(basename $url)
+    fi
+    echo "->base_name: $base_name"
+
+    echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
+    safe_fetch $url $(assemble_target_path $type) $base_name
+  done
+}
+function install_checkpoints {
+  if [ "$JSON_CHECKPOINTS" = false ]; then
+    echo "Error: $FINAL_JSON not contain $type."
+    return 1
+  fi
+  install_array_object_config "checkpoint" $JSON_CHECKPOINTS
+}
+function install_embeddings {
+  if [ "$JSON_EMBEDDINGS" = false ]; then
+    echo "Error: $FINAL_JSON not contain $type."
+    return 1
+  fi
+  install_array_object_config "embedding" $JSON_EMBEDDINGS
+}
+function install_loras {
+  if [ "$JSON_LORAS" = false ]; then
+    echo "Error: $FINAL_JSON not contain $type."
+    return 1
+  fi
+  install_array_object_config "lora" $JSON_LORAS
+}
+function install_vaes {
+  if [ "$JSON_VAES" = false ]; then
+    echo "Error: $FINAL_JSON not contain $type."
+    return 1
+  fi
+  install_array_object_config "vae" $JSON_VAES
+}
+function install_extensions {
+  if [ "$JSON_EXTENSIONS" = false ]; then
+    echo "Error: $FINAL_JSON not contain $type."
+    return 1
+  fi
+  install_array_config "extension" $JSON_EXTENSIONS
+}
+function install_scripts {
+  if [ "$JSON_SCRIPTS" = false ]; then
+    echo "Error: $FINAL_JSON not contain $type."
+    return 1
+  fi
+  install_array_config "script" $JSON_SCRIPTS
+}
+function install_esrgans {
+  echo "Usage: install_esrgans not done:$JSON_ESRGANS"
+}
+function install_hypernetworks {
+  echo "Usage: install_hypernetworks not done:$JSON_HYPERNETWORKS"
+}
+function install_lycoris {
+  echo "Usage: install_lycoris not done:$JSON_LYCORIS"
+}
+function install_controlnets {
+  echo "Usage: install_controlnets not done:$JSON_CONTROLNETS"
+}
+function install_clips {
+  echo "Usage: install_clips not done:$JSON_CLIPS"
 }
 
 function run {
@@ -447,6 +524,12 @@ if [ "$TEMPLATE_TYPE" = "file" ]; then
 
   #Update packages
   apt -y update -qq && apt -y install -qq unionfs-fuse libcairo2-dev pkg-config python3-dev aria2
+
+  if ! command -v jq &> /dev/null
+  then
+    echo "jq not found, installing..."
+    apt -y install jq
+  fi
 
   if [ "$FORCE_INSTALL" = true ] || [ ! -e "$BASEPATH/.install_status" ] || ! grep -qs "Installation Completed" "$BASEPATH/.install_status"; then
       install_json $FINAL_JSON
