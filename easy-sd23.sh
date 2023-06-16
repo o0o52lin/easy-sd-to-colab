@@ -431,39 +431,45 @@ function install_json {
         echo "Usage: lycoris not done:$component_type"
       elif  [ "$component_type" = "esrgans" ]; then
         type="esrgan"
-        for one in $(echo "${json_var_val}" | jq -r '.[]'); do
-          url=${one}
-          base_name=$(basename $url)
+        # 使用 jq 解析 JSON 数据
+        for one in $(echo "${array_object}" | jq -r '.[] | @base64'); do
+          # 解码 base64 编码的 JSON 数据
+          _jq() {
+              echo "${one}" | base64 --decode | jq -r "${1}"
+          }
+
+          base_name=$(_jq '.filename')
+          url=$(_jq '.url')
+
+          if [[ ! -z $base_name ]]; then
+            base_name=$(basename $url)
+          fi
           echo "->base_name: $base_name"
           echo "->url: $url"
-          git ls-remote $url &> /dev/null
-          if [[ $? -eq 0 ]]; then
-            #this is a git repo
-            branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
-            echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
-            safe_git "$url" $(assemble_target_path $type)/$base_name ${branch:+$branch}
-          else
-            echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
-            safe_fetch $url $(assemble_target_path $type) $base_name
-          fi
+
+          echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
+          safe_fetch $url $(assemble_target_path $type) $base_name
         done
       elif  [ "$component_type" = "clips" ]; then
         type="clip"
-        for one in $(echo "${json_var_val}" | jq -r '.[]'); do
-          url=${one}
-          base_name=$(basename $url)
+        # 使用 jq 解析 JSON 数据
+        for one in $(echo "${array_object}" | jq -r '.[] | @base64'); do
+          # 解码 base64 编码的 JSON 数据
+          _jq() {
+              echo "${one}" | base64 --decode | jq -r "${1}"
+          }
+
+          base_name=$(_jq '.filename')
+          url=$(_jq '.url')
+
+          if [[ ! -z $base_name ]]; then
+            base_name=$(basename $url)
+          fi
           echo "->base_name: $base_name"
           echo "->url: $url"
-          git ls-remote $url &> /dev/null
-          if [[ $? -eq 0 ]]; then
-            #this is a git repo
-            branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
-            echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
-            safe_git "$url" $(assemble_target_path $type)/$base_name ${branch:+$branch}
-          else
-            echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
-            safe_fetch $url $(assemble_target_path $type) $base_name
-          fi
+
+          echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
+          safe_fetch $url $(assemble_target_path $type) $base_name
         done
       fi
 
