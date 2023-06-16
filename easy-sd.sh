@@ -316,7 +316,7 @@ do
         echo "Options:"
         echo "-f, --force-install          Force reinstall"
         echo "-l, --template-location      Location of the template repo or local directory (default: https://github.com/o0o52lin/easy-sd-to-colab)"
-        echo "-n, --template-name          Name of the template to install (default: template)"
+        echo "-n, --template-name          Name of the template to install (default: templates/default)"
         echo "-i, --install-path           Path to install SD (default: /content/drive/MyDrive/SD)"
         exit 1
         ;;
