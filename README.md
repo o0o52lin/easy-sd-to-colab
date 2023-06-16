@@ -1,6 +1,7 @@
 # sd-template
 SD版本：stable-diffusion-webui#v2.3
-三行代码自动部署SD到谷歌colab（基于https://github.com/AI-skimos/3line-colab-sd，稍作了修改）
+
+三行代码自动部署SD到谷歌colab（基于https://github.com/AI-skimos/3line-colab-sd ，稍作了修改）
 ![](main.png)
 
 ## 用例
