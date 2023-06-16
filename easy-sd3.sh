@@ -264,19 +264,16 @@ function install {
 # 获取指定字段的值
 function get_config_value() {
     local field=$1
-    local value=$(echo $config | jq -r ".$field")
+    local value=$(echo $JSON_CONFIG | jq -r ".$field")
     echo $value
 }
 
 function install_json {
     #Prepare runtime
+    JSON_CONFIG=$(cat "$1")
     component_types=( "webui" "extensions" "scripts" "embeddings" "esrgans" "checkpoints" "hypernetworks" "loras" "lycoris" "vaes" "clips" "controlnets" )
     for component_type in "${component_types[@]}"
     do
-      val=$(get_config_value "$component_type")
-      template_path=$1
-      config_path=$template_path/$component_type.txt
-
       json_var="JSON_${component_type^^}"
       json_var_val=$(get_config_value "$component_type")
       var_cmd="${json_var}=\"${json_var_val}\""
@@ -450,6 +447,7 @@ export JSON_LYCORIS=false
 export JSON_VAES=false
 export JSON_CLIPS=false
 export JSON_CONTROLNETS=false
+export JSON_CONFIG=""
 
 while [[ $# -gt 0 ]]
 do
