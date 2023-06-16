@@ -24,12 +24,42 @@ SD webui版本：v2.3
 
 ## 模板支持
 可以通过在文本文件中列出模型、插件、脚本等的下载地址，来深度定制化一键部署的SD。
-| 命令行参数 | 参数缩写 | 用法 | 默认值 |
-|---|---|---|---|
-| <div style="width:100px">--force-install</div> |-f|强制重新安装，可用于解决已有安装<br>实例中的代码、文件损坏等问题|false （不强制重新安装）|
-| <div style="width:100px">--template-location</div> |-l|模型文件地址<br>可以是一个github repo<br>如：https://github.com/xxx/yyy<br><br>也可以是你的服务器本地的目录路径，如:/tmp/template/example-template|https://github.com/o0o52lin/easy-sd-to-colab|
-| <div style="width:100px">--template-name</div> |-n|模板的名称，即模板的目录名|detault|
-| <div style="width:100px">--install-path</div> |-i|SD的安装路径|/content/drive/MyDrive/SD|
+<table>
+	<thead>
+		<tr>
+			<th width="25%">命令行参数</th>
+			<th width="25%">参数缩写</th>
+			<th width="25%">用法</th>
+			<th width="25%">默认值</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>--force-install</td>
+			<td>-f</td>
+			<td>强制重新安装，可用于解决已有安装<br>实例中的代码、文件损坏等问题</td>
+			<td>false （不强制重新安装）</td>
+		</tr>
+		<tr>
+			<td>--template-location</td>
+			<td>-l</td>
+			<td>模型文件地址<br>可以是一个github repo<br>如：<a href="https://github.com/xxx/yyy">https://github.com/xxx/yyy</a><br><br>也可以是你的服务器本地的目录路径，如:/tmp/template/example-template</td>
+			<td><a href="https://github.com/o0o52lin/easy-sd-to-colab">https://github.com/o0o52lin/easy-sd-to-colab</a></td>
+		</tr>
+		<tr>
+			<td>--template-name</td>
+			<td>-n</td>
+			<td>模板的名称，即模板的目录名</td>
+			<td>detault</td>
+		</tr>
+		<tr>
+			<td>--install-path</td>
+			<td>-i</td>
+			<td>SD的安装路径</td>
+			<td>/content/drive/MyDrive/SD</td>
+		</tr>
+	</tbody>
+</table>
 
 ### 默认值安装
 ```
