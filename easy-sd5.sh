@@ -279,7 +279,14 @@ function install_json {
       var_cmd="${json_var}=\"${json_var_val}\""
       eval $var_cmd
 
-      echo "$JSON_EBUI"
+      echo "$JSON_WEBUI"
+      # 从 webui 对象中获取 branch 和 url
+      BRANCH=$(echo $JSON_WEBUI | jq -r '.branch')
+      URL=$(echo $JSON_WEBUI | jq -r '.url')
+      
+      # 输出结果
+      echo "Branch: $BRANCH"
+      echo "URL: $URL"
 
       func_var="install_${component_type}"
       func_var=$(echo $func_var | tr '[:upper:]' '[:lower:]')
