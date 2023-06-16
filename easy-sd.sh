@@ -176,7 +176,7 @@ function assemble_target_path {
       clip)
         echo $BASEPATH/models/CLIP
         ;;
-      controlnets)
+      controlnet)
         echo $BASEPATH/extensions/sd-webui-controlnet/models
         ;;
       *)
