@@ -270,12 +270,12 @@ function install_json {
       json_var="JSON_${component_type^^}"
       json_var_val=$(cat $JSON_CONFIG_FILE | jq -r ".$component_types")
       var_cmd="${json_var}=\"${json_var_val}\""
-      eval $var_cmd
+      # eval $var_cmd
 
-      echo "$JSON_WEBUI"
+      echo "$json_var_val"
       # 从 webui 对象中获取 branch 和 url
-      BRANCH=$(echo $JSON_WEBUI | jq -r '.branch')
-      URL=$(echo $JSON_WEBUI | jq -r '.url')
+      BRANCH=$(echo $json_var_val | jq -r '.branch')
+      URL=$(echo $json_var_val | jq -r '.url')
       
       # 输出结果
       echo "Branch: $BRANCH"
@@ -283,7 +283,7 @@ function install_json {
 
       func_var="install_${component_type}"
       func_var=$(echo $func_var | tr '[:upper:]' '[:lower:]')
-      eval $func_var
+      eval $func_var "$json_var_val"
     done
 
     reset_repos $BASEPATH all
@@ -295,13 +295,14 @@ function install_json {
 
 function install_webui {
     type="webui"
-    if [ "$JSON_WEBUI" = false ]; then
+    json_var_val="$1"
+    if [ "$json_var_val" = false ]; then
       echo "Error: $FINAL_JSON not contain $type."
       return 1
     fi
-    branch=$(echo $JSON_WEBUI | jq -r '.branch')
-    url=$(echo $JSON_WEBUI | jq -r '.url')
-    echo "->JSON_WEBUI:$JSON_WEBUI"
+    branch=$(echo $json_var_val | jq -r '.branch')
+    url=$(echo $json_var_val | jq -r '.url')
+    echo "->JSON_WEBUI:$json_var_val"
     echo "->branch:$branch"
     echo "->url:$url"
     echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
@@ -357,46 +358,58 @@ function install_array_object_config {
   done
 }
 function install_checkpoints {
-  if [ "$JSON_CHECKPOINTS" = false ]; then
+  type="checkpoint"
+  json_var_val="$1"
+  if [ "$json_var_val" = false ]; then
     echo "Error: $FINAL_JSON not contain $type."
     return 1
   fi
-  install_array_object_config "checkpoint" $JSON_CHECKPOINTS
+  install_array_object_config "checkpoint" "$json_var_val"
 }
 function install_embeddings {
-  if [ "$JSON_EMBEDDINGS" = false ]; then
+  type="embedding"
+  json_var_val="$1"
+  if [ "$json_var_val" = false ]; then
     echo "Error: $FINAL_JSON not contain $type."
     return 1
   fi
-  install_array_object_config "embedding" $JSON_EMBEDDINGS
+  install_array_object_config "embedding" "$json_var_val"
 }
 function install_loras {
+  type="lora"
+  json_var_val="$1"
   if [ "$JSON_LORAS" = false ]; then
     echo "Error: $FINAL_JSON not contain $type."
     return 1
   fi
-  install_array_object_config "lora" $JSON_LORAS
+  install_array_object_config "lora" "$json_var_val"
 }
 function install_vaes {
+  type="vae"
+  json_var_val="$1"
   if [ "$JSON_VAES" = false ]; then
     echo "Error: $FINAL_JSON not contain $type."
     return 1
   fi
-  install_array_object_config "vae" $JSON_VAES
+  install_array_object_config "vae" "$json_var_val"
 }
 function install_extensions {
+  type="extension"
+  json_var_val="$1"
   if [ "$JSON_EXTENSIONS" = false ]; then
     echo "Error: $FINAL_JSON not contain $type."
     return 1
   fi
-  install_array_config "extension" $JSON_EXTENSIONS
+  install_array_config "extension" "$json_var_val"
 }
 function install_scripts {
+  type="script"
+  json_var_val="$1"
   if [ "$JSON_SCRIPTS" = false ]; then
     echo "Error: $FINAL_JSON not contain $type."
     return 1
   fi
-  install_array_config "script" $JSON_SCRIPTS
+  install_array_config "script" "$json_var_val"
 }
 function install_esrgans {
   echo "Usage: install_esrgans not done:$JSON_ESRGANS"
