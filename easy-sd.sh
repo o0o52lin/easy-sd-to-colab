@@ -634,7 +634,7 @@ function run {
 
 BASEPATH=/content/drive/MyDrive/SD
 TEMPLATE_LOCATION="https://github.com/o0o52lin/easy-sd-to-colab"
-TEMPLATE_TYPE="file"
+TEMPLATE_TYPE="dir"
 TEMPLATE_NAME="default"
 
 export JSON_WEBUI=false
