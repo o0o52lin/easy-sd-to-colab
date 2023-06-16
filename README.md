@@ -8,7 +8,7 @@ SD webui版本：v2.3
 ## 用例
 ### Google Colab挂载网盘安装
 点击下方按钮运行即可
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/o0o52lin/easy-sd-to-colab/blob/main/easy-sd.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/o0o52lin/easy-sd-to-colab/blob/main/easy-sd.ipynb?so-easy-right?)
 
 ### Google Colab不挂载网盘安装（每次需要重新下载模型文件）
 拷贝以下代码到colab并运行
