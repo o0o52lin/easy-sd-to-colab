@@ -299,8 +299,8 @@ function install_webui {
       echo "Error: $FINAL_JSON not contain $type."
       return 1
     fi
-    branch=$(echo $JSON_WEBUI | jq -r '.webui.branch')
-    url=$(echo $JSON_WEBUI | jq -r '.webui.url')
+    branch=$(echo $JSON_WEBUI | jq -r '.branch')
+    url=$(echo $JSON_WEBUI | jq -r '.url')
     echo "->JSON_WEBUI:$JSON_WEBUI"
     echo "->branch:$branch"
     echo "->url:$url"
