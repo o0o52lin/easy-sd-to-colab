@@ -2,7 +2,7 @@
 #判断是否安装 json解析工具“jq”
 echo  `command -v jq`
 if [ `command -v jq` ];then
-    echo 'jq 已经安装'
+    echo 'jq 已经安装了'
     JSON_WEBUI="{\"webui\":{\"url\":\"http\"}}"
     echo $("$JSON_WEBUI" | jq -r '.webui.url')
 else
