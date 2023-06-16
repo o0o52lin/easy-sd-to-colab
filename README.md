@@ -56,10 +56,15 @@ SD webui版本：v2.3
 	</tbody>
 </table>
 
-### 默认值安装
+### 安装示例
 ```
+\# 默认安装
 !bash <(curl -sL https://raw.githubusercontent.com/o0o52lin/easy-sd-to-colab/main/easy-sd.sh)
+
+\# 强制重新安装
+!bash <(curl -sL https://raw.githubusercontent.com/o0o52lin/easy-sd-to-colab/main/easy-sd.sh) -f
 ```
+
 不指定模板地址及模板名称,默认安装本项目templates目录下的default模板. (https://github.com/o0o52lin/easy-sd-to-colab/tree/main/templates/default)
 
 ### 安装指定github repo的模板
