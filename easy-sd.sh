@@ -281,7 +281,7 @@ function run {
 
 BASEPATH=/content/drive/MyDrive/SD
 TEMPLATE_LOCATION="https://github.com/o0o52lin/easy-sd-to-colab"
-TEMPLATE_NAME="template"
+TEMPLATE_NAME="default"
 while [[ $# -gt 0 ]]
 do
     key="$1"
