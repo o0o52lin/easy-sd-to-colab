@@ -280,10 +280,113 @@ function install_json {
       # 输出结果
       echo "Branch: $BRANCH"
       echo "URL: $URL"
+      if [ "$component_types" = "webui" ]; then
+        echo "->JSON_WEBUI:$json_var_val"
+        echo "->branch:$branch"
+        echo "->url:$url"
+        echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
+        safe_git "$trimmed_url" $(assemble_target_path $type) ${branch:+$branch}
+      elif  [ "$component_types" = "checkpoints" ]; then
+        type="checkpoint"
+        for one in $(echo "${json_var_val}" | jq -r '.[]'); do
+          url=${one}
+          base_name=$(basename $url)
+          echo "->base_name: $base_name"
+          git ls-remote $url &> /dev/null
+          if [[ $? -eq 0 ]]; then
+            #this is a git repo
+            branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
+            echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
+            safe_git "$url" $(assemble_target_path $type)/$base_name ${branch:+$branch}
+          else
+            echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
+            safe_fetch $url $(assemble_target_path $type) $base_name
+          fi
+        done
+      elif  [ "$component_types" = "embeddings" ]; then
+        type="embedding"
+        for one in $(echo "${json_var_val}" | jq -r '.[]'); do
+          url=${one}
+          base_name=$(basename $url)
+          echo "->base_name: $base_name"
+          git ls-remote $url &> /dev/null
+          if [[ $? -eq 0 ]]; then
+            #this is a git repo
+            branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
+            echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
+            safe_git "$url" $(assemble_target_path $type)/$base_name ${branch:+$branch}
+          else
+            echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
+            safe_fetch $url $(assemble_target_path $type) $base_name
+          fi
+        done
+      elif  [ "$component_types" = "loras" ]; then
+        type="lora"
+        for one in $(echo "${json_var_val}" | jq -r '.[]'); do
+          url=${one}
+          base_name=$(basename $url)
+          echo "->base_name: $base_name"
+          git ls-remote $url &> /dev/null
+          if [[ $? -eq 0 ]]; then
+            #this is a git repo
+            branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
+            echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
+            safe_git "$url" $(assemble_target_path $type)/$base_name ${branch:+$branch}
+          else
+            echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
+            safe_fetch $url $(assemble_target_path $type) $base_name
+          fi
+        done
+      elif  [ "$component_types" = "vaes" ]; then
+        type="vae"
+        for one in $(echo "${json_var_val}" | jq -r '.[]'); do
+          url=${one}
+          base_name=$(basename $url)
+          echo "->base_name: $base_name"
+          git ls-remote $url &> /dev/null
+          if [[ $? -eq 0 ]]; then
+            #this is a git repo
+            branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
+            echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
+            safe_git "$url" $(assemble_target_path $type)/$base_name ${branch:+$branch}
+          else
+            echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
+            safe_fetch $url $(assemble_target_path $type) $base_name
+          fi
+        done
+      elif  [ "$component_types" = "controlnets" ]; then
+        type="controlnet"
+        for one in $(echo "${json_var_val}" | jq -r '.[]'); do
+          url=${one}
+          base_name=$(basename $url)
+          echo "->base_name: $base_name"
+          git ls-remote $url &> /dev/null
+          if [[ $? -eq 0 ]]; then
+            #this is a git repo
+            branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
+            echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
+            safe_git "$url" $(assemble_target_path $type)/$base_name ${branch:+$branch}
+          else
+            echo "->This is a $type component file, will be saved to $(assemble_target_path $type)"
+            safe_fetch $url $(assemble_target_path $type) $base_name
+          fi
+        done
+      elif  [ "$component_types" = "extensions" ]; then
 
-      func_var="install_${component_type}"
-      func_var=$(echo $func_var | tr '[:upper:]' '[:lower:]')
-      eval $func_var "$json_var_val"
+      elif  [ "$component_types" = "scripts" ]; then
+
+      elif  [ "$component_types" = "hypernetworks" ]; then
+
+      elif  [ "$component_types" = "lycoris" ]; then
+
+      elif  [ "$component_types" = "esrgans" ]; then
+
+      elif  [ "$component_types" = "clips" ]; then
+
+      elif  [ "$component_types" = "esrgans" ]; then
+
+      if
+
     done
 
     reset_repos $BASEPATH all
