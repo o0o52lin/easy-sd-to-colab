@@ -63,7 +63,7 @@ SD webui版本：v2.3
 
 ### 强制重新安装
 ```
-!bash <(curl -sL https://raw.githubusercontent.com/o0o52lin/easy-sd-to-colab/main/easy-sd.sh) -f true
+!bash <(curl -sL https://raw.githubusercontent.com/o0o52lin/easy-sd-to-colab/main/easy-sd.sh) -f
 ```
 
 ### 安装指定github repo的模板
