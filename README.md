@@ -36,7 +36,7 @@ SD webui版本：v2.3
 		<tr>
 			<td>-f, --force-install</td>
 			<td>强制重新安装，可用于解决已有安装<br>实例中的代码、文件损坏等问题</td>
-			<td>false （不强制重新安装）</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>-l, --template-location</td>
