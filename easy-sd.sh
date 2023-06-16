@@ -146,28 +146,28 @@ function assemble_target_path {
       webui)
         echo $BASEPATH
         ;;
-      extensions)
+      extension)
         echo $BASEPATH/extensions
         ;;
-      scripts)
+      script)
         echo $BASEPATH/scripts
         ;;
-      embeddings)
+      embedding)
         echo $BASEPATH/embeddings
         ;;
-      ESRGAN_models)
+      esrgan)
         echo $BASEPATH/models/ESRGAN
         ;;
-      checkpoints)
+      checkpoint)
         echo $BASEPATH/models/Stable-diffusion
         ;;
-      hypernetworks)
+      hypernetwork)
         echo $BASEPATH/models/hypernetworks
         ;;
       lora)
         echo $BASEPATH/models/Lora
         ;;
-      lycoris)
+      lycori)
         echo $BASEPATH/models/LyCORIS
         ;;
       vae)
@@ -176,7 +176,7 @@ function assemble_target_path {
       clip)
         echo $BASEPATH/models/CLIP
         ;;
-      cn_models)
+      controlnet)
         echo $BASEPATH/extensions/sd-webui-controlnet/models
         ;;
       *)
@@ -264,23 +264,29 @@ function install {
 # 获取指定字段的值
 function get_config_value() {
     local field=$1
-    local value=$(echo $config | jq -r ".$field")
+    local value=$(echo $JSON_CONFIG | jq -r ".$field")
     echo $value
 }
 
 function install_json {
     #Prepare runtime
+    JSON_CONFIG=$(cat "$1")
     component_types=( "webui" "extensions" "scripts" "embeddings" "esrgans" "checkpoints" "hypernetworks" "loras" "lycoris" "vaes" "clips" "controlnets" )
     for component_type in "${component_types[@]}"
     do
-      val=$(get_config_value "$component_type")
-      template_path=$1
-      config_path=$template_path/$component_type.txt
-
       json_var="JSON_${component_type^^}"
       json_var_val=$(get_config_value "$component_type")
       var_cmd="${json_var}=\"${json_var_val}\""
       eval $var_cmd
+
+      echo "$JSON_WEBUI"
+      # 从 webui 对象中获取 branch 和 url
+      BRANCH=$(echo $JSON_WEBUI | jq -r '.branch')
+      URL=$(echo $JSON_WEBUI | jq -r '.url')
+      
+      # 输出结果
+      echo "Branch: $BRANCH"
+      echo "URL: $URL"
 
       func_var="install_${component_type}"
       func_var=$(echo $func_var | tr '[:upper:]' '[:lower:]')
@@ -300,13 +306,13 @@ function install_webui {
       echo "Error: $FINAL_JSON not contain $type."
       return 1
     fi
-    branch=$(echo $JSON_WEBUI | jq -r '.webui.branch')
-    url=$(echo $JSON_WEBUI | jq -r '.webui.url')
+    branch=$(echo $JSON_WEBUI | jq -r '.branch')
+    url=$(echo $JSON_WEBUI | jq -r '.url')
     echo "->JSON_WEBUI:$JSON_WEBUI"
     echo "->branch:$branch"
     echo "->url:$url"
     echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
-    safe_git "$url" $(assemble_target_path $type) ${branch:+$branch}
+    safe_git "$trimmed_url" $(assemble_target_path $type) ${branch:+$branch}
 }
 function install_array_config {
   if [[ -z "$1" ]]; then
@@ -436,18 +442,19 @@ TEMPLATE_LOCATION="https://github.com/o0o52lin/easy-sd-to-colab"
 TEMPLATE_TYPE="file"
 TEMPLATE_NAME="default"
 
-JSON_WEBUI=false
-JSON_EXTENSIONS=false
-JSON_SCRIPTS=false
-JSON_EMBEDDINGS=false
-JSON_ESRGANS=false
-JSON_CHECKPOINTS=false
-JSON_HYPERNETWORKS=false
-JSON_LORAS=false
-JSON_LYCORIS=false
-JSON_VAES=false
-JSON_CLIPS=false
-JSON_CONTROLNETS=false
+export JSON_WEBUI=false
+export JSON_EXTENSIONS=false
+export JSON_SCRIPTS=false
+export JSON_EMBEDDINGS=false
+export JSON_ESRGANS=false
+export JSON_CHECKPOINTS=false
+export JSON_HYPERNETWORKS=false
+export JSON_LORAS=false
+export JSON_LYCORIS=false
+export JSON_VAES=false
+export JSON_CLIPS=false
+export JSON_CONTROLNETS=false
+export JSON_CONFIG=""
 
 while [[ $# -gt 0 ]]
 do
