@@ -26,8 +26,8 @@ SD webui版本：v2.3
 可以通过在文本文件中列出模型、插件、脚本等的下载地址，来深度定制化一键部署的SD。
 |命令行参数|用法|默认值|
 |---|---|---|
-|-f, --force-install|强制重新安装，可用于解决已有安装实例中的代码、文件损坏等问题|false （不强制重新安装）|
-|-l, --template-location|模型文件地址。<br>可以是一个github repo，如：https://github.com/xxx/yyy<br>也可以是你的服务器本地的目录路径，如:/tmp/template/example-template|https://github.com/o0o52lin/easy-sd-to-colab|
+|-f, --force-install|强制重新安装，可用于解决已有安装<br>实例中的代码、文件损坏等问题|false （不强制重新安装）|
+|-l, --template-location|模型文件地址。<br>可以是一个github repo<br>如：https://github.com/xxx/yyy<br><br>也可以是你的服务器本地的目录路径，如:/tmp/template/example-template|https://github.com/o0o52lin/easy-sd-to-colab|
 |-n, --template-name|模板的名称，即模板的目录名|detault|
 |-i, --install-path|SD的安装路径|/content/drive/MyDrive/SD|
 
