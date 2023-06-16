@@ -425,15 +425,15 @@ function install_json {
           fi
         done
       elif  [ "$component_type" = "hypernetworks" ]; then
-        echo "Usage: hypernetworks not done:$component_types"
+        echo "Usage: hypernetworks not done:$component_type"
       elif  [ "$component_type" = "lycoris" ]; then
-        echo "Usage: lycoris not done:$component_types"
+        echo "Usage: lycoris not done:$component_type"
       elif  [ "$component_type" = "esrgans" ]; then
-        echo "Usage: esrgans not done:$component_types"
+        echo "Usage: esrgans not done:$component_type"
       elif  [ "$component_type" = "clips" ]; then
-        echo "Usage: clips not done:$component_types"
+        echo "Usage: clips not done:$component_type"
       elif  [ "$component_type" = "esrgans" ]; then
-        echo "Usage: esrgans not done:$component_types"
+        echo "Usage: esrgans not done:$component_type"
       fi
 
     done
