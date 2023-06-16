@@ -27,9 +27,9 @@ SD webui版本：v2.3
 <table>
 	<thead>
 		<tr>
-			<th width="15%">命令行参数</th>
+			<th width="20%">命令行参数</th>
 			<th width="45%">用法</th>
-			<th width="40%">默认值</th>
+			<th width="35%">默认值</th>
 		</tr>
 	</thead>
 	<tbody>
