@@ -71,3 +71,4 @@ if __name__ == "__main__":
   global path
   args = sys.argv
   path = args[1]
+  print(f"path:{path}")
