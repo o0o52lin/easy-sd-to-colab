@@ -50,8 +50,7 @@ def check_down(config_file, type, idx):
       data = json.load(f)
   num = len(data[type])
   filename = data[type][idx]['filename']
-  url = data[type][idx]['url']e
-  e
+  url = data[type][idx]['url']
   if os.path.isfile(filename):
     print(f"{filename} already exists, check if an update is needed...")
     # Check file size
