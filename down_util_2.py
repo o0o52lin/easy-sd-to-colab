@@ -63,4 +63,4 @@ def check_down(config_file, type, idx):
     else:
       print(f"{filename} is outdated. Downloading...")
   
-  print(filename, url, num)
+  print(filename)
