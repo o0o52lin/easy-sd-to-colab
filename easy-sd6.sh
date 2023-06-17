@@ -286,26 +286,26 @@ function install_json {
     wget -qO down_util.py 'https://raw.githubusercontent.com/o0o52lin/easy-sd-to-colab/main/down_util.py'
     for component_type in "${component_types[@]}"
     do
-      num=$(python -c "import down_util;print(down_util.get_num('$JSON_CONFIG_FILE', '$component_type', 0))")
-      num=$((num))
+#       num=$(python -c "import down_util;print(down_util.get_num('$JSON_CONFIG_FILE', '$component_type', 0))")
+#       num=$((num))
 
-      if [ "$component_type" = "webui" ]; then
-        type="webui"
-        res=($(echo get_url_info $JSON_CONFIG_FILE $component_type 0)))
-        url=$res[1]
-        branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
-        echo "->branch:$branch"
-        echo "->url:$url"
-        echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
-        safe_git "$url" $(assemble_target_path $type) ${branch:+$branch}
-      elif  [[ "$component_type" = "extensions" || "$component_type" = "scripts" ]]; then
-        for i in $(seq 1 $num)
-        do
-          res=($(echo get_url_info $JSON_CONFIG_FILE $component_type 0)))
-        done
-      else
+#       if [ "$component_type" = "webui" ]; then
+#         type="webui"
+#         res=($(echo get_url_info $JSON_CONFIG_FILE $component_type 0)))
+#         url=$res[1]
+#         branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
+#         echo "->branch:$branch"
+#         echo "->url:$url"
+#         echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
+#         safe_git "$url" $(assemble_target_path $type) ${branch:+$branch}
+#       elif  [[ "$component_type" = "extensions" || "$component_type" = "scripts" ]]; then
+#         for i in $(seq 1 $num)
+#         do
+# #           res=($(echo get_url_info $JSON_CONFIG_FILE $component_type 0)))
+#         done
+#       else
 
-      fi
+#       fi
 
 
       json_var="JSON_${component_type^^}"
