@@ -69,6 +69,7 @@ def checkDown(type, idx):
 
 if __name__ == "__main__":
   global path
+  path = ''
   args = sys.argv
   path = args[1]
   print(f"path:{path}")
