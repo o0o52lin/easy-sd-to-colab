@@ -5,7 +5,6 @@ import re
 import sys
 import subprocess
 
-path = ''
 def check_url(url):
   curl_command = "curl -I -X GET '"+url+"'"
   result = subprocess.run(curl_command, shell=True, capture_output=True, text=True)
@@ -68,8 +67,7 @@ def checkDown(type, idx):
   return filename, url, num
 
 if __name__ == "__main__":
-  global path
-  path = ''
   args = sys.argv
+  global path
   path = args[1]
   print(f"path:{path}")
