@@ -66,8 +66,11 @@ def checkDown(type, idx):
 
   return filename, url, num
 
+def init(p):
+  global path
+  path = p
+  print(f"{path} is the path.")
+  
 if __name__ == "__main__":
   args = sys.argv
-  global path
-  path = args[1]
-  print("path:"+str(path))
+  init(args[1])
