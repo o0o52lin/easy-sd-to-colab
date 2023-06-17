@@ -5,7 +5,6 @@ import re
 import sys
 import subprocess
 
-config_file = None
 def check_url(url):
   curl_command = "curl -I -X GET '"+url+"'"
   result = subprocess.run(curl_command, shell=True, capture_output=True, text=True)
@@ -46,13 +45,13 @@ def get_remote_file_size(url):
       url = l
   return get_header_content_length(url)
 
-def checkDown(type, idx):
-  with open('default.json') as f:
+def check_down(config_file, type, idx):
+  with open(config_file) as f:
       data = json.load(f)
   num = len(data[type])
   filename = data[type][idx]['filename']
-  url = data[type][idx]['url']
-  
+  url = data[type][idx]['url']e
+  e
   if os.path.isfile(filename):
     print(f"{filename} already exists, check if an update is needed...")
     # Check file size
@@ -66,13 +65,3 @@ def checkDown(type, idx):
       print(f"{filename} is outdated. Downloading...")
 
   return filename, url, num
-
-def init(p, func):
-  global config_file
-  config_file = p
-  print(f"{config_file} is the path.")
-  func = getattr(__main__, func)
-  func()
-  
-def test():
-  print(f"path is {config_file}.")
