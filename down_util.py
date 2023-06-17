@@ -72,6 +72,9 @@ def init(p):
   global_path = p
   print(f"{global_path} is the path.")
   
+def test():
+  print(f"path is {global_path}.")
+  
 if __name__ == "__main__":
   args = sys.argv
   init(args[1])
