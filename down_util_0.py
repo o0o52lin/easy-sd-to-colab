@@ -35,7 +35,7 @@ def get_header_content_length(url):
 
   return val
 
-def get_remote_file_size(url):ee
+def get_remote_file_size(url):
   location = check_url(url)
   print(f'location: {location}')
   while len(location) > 0:
