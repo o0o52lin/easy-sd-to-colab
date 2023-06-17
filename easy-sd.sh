@@ -265,8 +265,8 @@ function install {
     sed_for installation $BASEPATH
     cd $BASEPATH && python launch.py --skip-torch-cuda-test && echo "Installation Completed" > $BASEPATH/.install_status
 }
-function get_url_info(config_file, type, idx){
-    res=$(python -c "import down_util;print(down_util.check_down('$config_file', '$type', $idx))")
+function get_url_info{
+    res=$(python -c "import down_util;print(down_util.check_down('$1', '$2', $3))")
     filename=$(echo $res | awk -F"[<]" '{print $1}')
     url=$(echo $res | awk -F"[<]" '{print $2}')
     local_size=$(echo $res | awk -F"[<]" '{print $3}')
@@ -288,7 +288,7 @@ function install_json {
 
       if [ "$component_type" = "webui" ]; then
         type="webui"
-        res=($(echo get_url_info($JSON_CONFIG_FILE, $component_type, 0)))
+        res=($(echo get_url_info $JSON_CONFIG_FILE $component_type 0)))
         url=$res[1]
         branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
         echo "->branch:$branch"
@@ -298,7 +298,7 @@ function install_json {
       elif  [[ "$component_type" = "extensions" || "$component_type" = "scripts" ]]; then
         for i in $(seq 1 $num)
         do
-          res=($(echo get_url_info($JSON_CONFIG_FILE, $component_type, $i-1)))
+          res=($(echo get_url_info $JSON_CONFIG_FILE $component_type 0)))
         done
       else
 
