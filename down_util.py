@@ -5,7 +5,7 @@ import re
 import sys
 import subprocess
 
-global_path = None
+config_file = None
 def check_url(url):
   curl_command = "curl -I -X GET '"+url+"'"
   result = subprocess.run(curl_command, shell=True, capture_output=True, text=True)
@@ -67,10 +67,12 @@ def checkDown(type, idx):
 
   return filename, url, num
 
-def init(p):
-  global global_path
-  global_path = p
-  print(f"{global_path} is the path.")
+def init(p, func):
+  global config_file
+  config_file = p
+  print(f"{config_file} is the path.")
+  func = getattr(__main__, func)
+  func()
   
 def test():
-  print(f"path is {global_path}.")
+  print(f"path is {config_file}.")
