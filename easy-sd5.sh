@@ -265,20 +265,20 @@ function install {
     sed_for installation $BASEPATH
     cd $BASEPATH && python launch.py --skip-torch-cuda-test && echo "Installation Completed" > $BASEPATH/.install_status
 }
-function get_url_info{
-    file="$1"
-    type="$2"
-    idx="$3"
-    res=$(python -c "import down_util;print(down_util.check_down('${file}', '${type}', ${idx}))")
-    filename=$(echo $res | awk -F"[<]" '{print $1}')
-    url=$(echo $res | awk -F"[<]" '{print $2}')
-    local_size=$(echo $res | awk -F"[<]" '{print $3}')
-    remote_size=$(echo $res | awk -F"[<]" '{print $4}')
-    local_size=$((local_size))
-    remote_size=$((remote_size))
+# function get_url_info{
+#     file="$1"
+#     type="$2"
+#     idx="$3"
+#     res=$(python -c "import down_util;print(down_util.check_down('${file}', '${type}', ${idx}))")
+#     filename=$(echo $res | awk -F"[<]" '{print $1}')
+#     url=$(echo $res | awk -F"[<]" '{print $2}')
+#     local_size=$(echo $res | awk -F"[<]" '{print $3}')
+#     remote_size=$(echo $res | awk -F"[<]" '{print $4}')
+#     local_size=$((local_size))
+#     remote_size=$((remote_size))
 
-    return "$filename,$url,$local_size,$remote_size"
-}
+#     return "$filename,$url,$local_size,$remote_size"
+# }
 
 function install_json {
     #Prepare runtime
