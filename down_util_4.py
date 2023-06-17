@@ -48,7 +48,6 @@ def get_remote_file_size(url):
 def check_down(config_file, type, idx):
   with open(config_file) as f:
       data = json.load(f)
-  print(data)
   num = len(data[type])
   filename = data[type][idx]['filename']
   url = data[type][idx]['url']
@@ -64,4 +63,4 @@ def check_down(config_file, type, idx):
     else:
       print(f"{filename} is outdated. Downloading...")
   
-  print(filename)
+  return filename
