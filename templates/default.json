@@ -1,8 +1,5 @@
 {
-   "webui": {
-      "branch": "master",
-      "url":"https://github.com/camenduru/stable-diffusion-webui"
-   },
+   "webui": "https://github.com/camenduru/stable-diffusion-webui#v2.3",
    "checkpoints": [
       {
          "filename":"majicmixRealistic_v6.safetensors",

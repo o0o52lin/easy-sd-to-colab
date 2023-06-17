@@ -44,6 +44,10 @@ function safe_fetch {
   fi
 
   if [[ -f "$output_dir/$output_filename" ]]; then
+    location=$(curl -Is -X GET "$url" | grep -i location | awk '{print $2}')
+    if [[ ! -z $location ]]; then
+      url=$location
+    fi
     remote_size=$(curl -Is "$url" | awk '/content-length/ {clen=$2} /x-linked-size/ {xsize=$2} END {if (xsize) print xsize; else print clen;}' | tr -dc '0-9' || echo '')
     local_size=$(stat --format=%s "$output_dir/$output_filename" 2>/dev/null | tr -dc '0-9' || echo '')
     echo "LOCAL_SIZE: $local_size"
@@ -261,12 +265,46 @@ function install {
     sed_for installation $BASEPATH
     cd $BASEPATH && python launch.py --skip-torch-cuda-test && echo "Installation Completed" > $BASEPATH/.install_status
 }
+function get_url_info(config_file, type, idx){
+    res=$(python -c "import down_util;print(down_util.check_down('$config_file', '$type', $idx))")
+    filename=$(echo $res | awk -F"[<]" '{print $1}')
+    url=$(echo $res | awk -F"[<]" '{print $2}')
+    local_size=$(echo $res | awk -F"[<]" '{print $3}')
+    remote_size=$(echo $res | awk -F"[<]" '{print $4}')
+    local_size=$((local_size))
+    remote_size=$((remote_size))
+
+    return "$filename,$url,$local_size,$remote_size"
+}
 
 function install_json {
     #Prepare runtime
     component_types=( "webui" "extensions" "scripts" "embeddings" "esrgans" "checkpoints" "hypernetworks" "loras" "lycoris" "vaes" "clips" "controlnets" )
+    wget -qO down_util.py 'https://raw.githubusercontent.com/o0o52lin/easy-sd-to-colab/main/down_util.py'
     for component_type in "${component_types[@]}"
     do
+      num=$(python -c "import down_util;print(down_util.get_num('$JSON_CONFIG_FILE', '$component_type', 0))")
+      num=$((num))
+
+      if [ "$component_type" = "webui" ]; then
+        type="webui"
+        res=($(echo get_url_info($JSON_CONFIG_FILE, $component_type, 0)))
+        url=$res[1]
+        branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
+        echo "->branch:$branch"
+        echo "->url:$url"
+        echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
+        safe_git "$url" $(assemble_target_path $type) ${branch:+$branch}
+      elif  [[ "$component_type" = "extensions" || "$component_type" = "scripts" ]]; then
+        for i in $(seq 1 $num)
+        do
+          res=($(echo get_url_info($JSON_CONFIG_FILE, $component_type, $i-1)))
+        done
+      else
+
+      fi
+
+
       json_var="JSON_${component_type^^}"
       json_var_val=$(cat $JSON_CONFIG_FILE | jq -r ".$component_type")
       var_cmd="${json_var}=\"${json_var_val}\""
@@ -275,11 +313,9 @@ function install_json {
       echo "$json_var_val"
       if [ "$component_type" = "webui" ]; then
         type="webui"
-        # 从 webui 对象中获取 branch 和 url
-        branch=$(echo $json_var_val | jq -r '.branch')
-        url=$(echo $json_var_val | jq -r '.url')
+        branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
+        url=$(echo $json_var_val)
         
-        echo "->JSON_WEBUI:$json_var_val"
         echo "->branch:$branch"
         echo "->url:$url"
         echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
