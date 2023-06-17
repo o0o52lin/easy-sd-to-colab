@@ -35,7 +35,7 @@ def get_header_content_length(url):
 
   return val
 
-def get_remote_file_size(url):
+def get_remote_file_size(url):ee
   location = check_url(url)
   print(f'location: {location}')
   while len(location) > 0:
@@ -48,7 +48,6 @@ def get_remote_file_size(url):
 def check_down(config_file, type, idx):
   with open(config_file) as f:
       data = json.load(f)
-  print(data)
   num = len(data[type])
   filename = data[type][idx]['filename']
   url = data[type][idx]['url']
@@ -63,5 +62,5 @@ def check_down(config_file, type, idx):
       print(f"{filename} is up to date.")
     else:
       print(f"{filename} is outdated. Downloading...")
-
-  return filename, url, num
+  
+  print(filename, url, num)
