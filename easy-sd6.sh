@@ -265,20 +265,25 @@ function install {
     sed_for installation $BASEPATH
     cd $BASEPATH && python launch.py --skip-torch-cuda-test && echo "Installation Completed" > $BASEPATH/.install_status
 }
-# function get_url_info{
-#     file="$1"
-#     type="$2"
-#     idx="$3"
-#     res=$(python -c "import down_util;print(down_util.check_down('${file}', '${type}', ${idx}))")
-#     filename=$(echo $res | awk -F"[<]" '{print $1}')
-#     url=$(echo $res | awk -F"[<]" '{print $2}')
-#     local_size=$(echo $res | awk -F"[<]" '{print $3}')
-#     remote_size=$(echo $res | awk -F"[<]" '{print $4}')
-#     local_size=$((local_size))
-#     remote_size=$((remote_size))
 
-#     return "$filename,$url,$local_size,$remote_size"
-# }
+function get_url_info {
+  if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
+    echo "Error: get_url_info params are empty."
+    return 1
+  fi
+  file="$1"
+  type="$2"
+  idx="$3"
+  cmdstr="import down_util;print(down_util.check_down('${file}', '${type}', ${idx}))"
+  res=$(python -c "$cmdstr")
+
+  filename=$(echo $res | awk -F"[<]" '{print $1}')
+  url=$(echo $res | awk -F"[<]" '{print $2}')
+  local_size=$(echo $res | awk -F"[<]" '{print $3}')
+  remote_size=$(echo $res | awk -F"[<]" '{print $4}')
+  local_size=$((local_size))
+  remote_size=$((remote_size))
+}
 
 function install_json {
     #Prepare runtime

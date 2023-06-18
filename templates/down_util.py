@@ -64,7 +64,7 @@ def check_down(config_file, type, idx):
   elif type in ["extensions", "scripts"]:
     return "<"+data[type][idx]+"<0<0"
   else:
-    if 'url' in data.get(type, {}) and data[type]['url']:
+    if len(data[type]) > 0 and data[type][idx]['url']:
       filename = data[type][idx]['filename'] if 'filename' in data.get(type, {}) and data[type]['filename'] else ''
       url = data[type][idx]['url']
       if os.path.isfile(filename):
