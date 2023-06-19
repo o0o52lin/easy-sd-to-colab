@@ -677,6 +677,13 @@ function run {
 }
 
 BASEPATH=/content/drive/MyDrive/SD
+if [ ! -d "/opt/SD" ]; then
+  mkdir "/opt/SD"
+fi
+if [ ! -d $BASEPATH ]; then
+  mkdir $BASEPATH
+fi
+mount --bind '/opt/SD' $BASEPATH
 TEMPLATE_LOCATION="https://github.com/o0o52lin/easy-sd-to-colab"
 TEMPLATE_TYPE="dir"
 TEMPLATE_NAME="default"
