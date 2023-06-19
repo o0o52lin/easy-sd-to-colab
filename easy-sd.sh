@@ -684,6 +684,7 @@ if [ ! -d $BASEPATH ]; then
   mkdir $BASEPATH
 fi
 mount --bind '/opt/SD' $BASEPATH
+BASEPATH=/opt/SD
 TEMPLATE_LOCATION="https://github.com/o0o52lin/easy-sd-to-colab"
 TEMPLATE_TYPE="dir"
 TEMPLATE_NAME="default"
