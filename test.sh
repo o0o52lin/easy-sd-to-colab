@@ -1,24 +1,13 @@
 #!/bin/bash
 
-env PYTHONDONTWRITEBYTECODE=1 &>/dev/null
-env TF_CPP_MIN_LOG_LEVEL=1 &>/dev/null
-
 url='https://civitai.com/api/download/models/66043'
 location=$(curl -Is -X GET "$url" | grep -i location | awk '{print $2}')
 if [[ ! -z $location ]]; then
-  url=$location
+  url=$(echo -e "$location" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | tr -d '\n')
 fi
-echo "url: $url"
-a='curl -Is -X "GET" "<url>"'
-b="import os; bash_script='curl -Is -X \"GET\" \"<url>\"'; var_name='<url>'; var_value='{url}'; bash_script=bash_script.replace(var_name,var_value); print(bash_script)"
-c=${b/{url}/$url}
-echo $c
-a=$(python -c "import os; bash_script='curl -Is -X \"GET\" \"<url>\"'; var_name='<url>'; var_value='https://www.baidu.com'; bash_script=bash_script.replace(var_name,var_value); print(bash_script)")
-echo $a
-header=$(curl -Is -X "GET" $url)
-echo "header:$header"
+cmd='curl -Is -X "GET" "<url>"'
+header=$(eval ${cmd/<url>/$url})
 header=$(echo "$header" | tr '[:upper:]' '[:lower:]')
-echo "header2:$header"
 remote_size=$(echo "$header" | awk '/content-length/ {clen=$2} /x-linked-size/ {xsize=$2} END {if (xsize) print xsize; else print clen;}' | tr -dc '0-9' || echo '')
 local_size=0
 echo "LOCAL_SIZE: $local_size"
@@ -27,4 +16,3 @@ if [[ $local_size != 0 ]] && [[ "$local_size" -eq "$remote_size" ]]; then
   echo "INFO: local file '$output_filename' is up-to-date, skipping download"
   return 0
 fi
-curl -Is -X "GET" "$url"
