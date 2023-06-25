@@ -5,9 +5,10 @@ if [[ ! -z $location ]]; then
   url=$location
 fi
 echo "url: $url"
-header=$(curl -Is -X GET "$url")
+header=$(curl -Is -X GET $url)
+echo "header:$header"
 header=$(echo "$header" | tr '[:upper:]' '[:lower:]')
-echo "$header"
+echo "header2:$header"
 remote_size=$(echo "$header" | awk '/content-length/ {clen=$2} /x-linked-size/ {xsize=$2} END {if (xsize) print xsize; else print clen;}' | tr -dc '0-9' || echo '')
 local_size=0
 echo "LOCAL_SIZE: $local_size"
