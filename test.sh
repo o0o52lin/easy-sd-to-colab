@@ -10,8 +10,9 @@ if [[ ! -z $location ]]; then
 fi
 echo "url: $url"
 a='curl -Is -X "GET" "<url>"'
-b="import os; bash_script='curl -Is -X \"GET\" \"<url>\"'; var_name='<url>'; var_value=\"${url}\"; bash_script=bash_script.replace(var_name,var_value); print(bash_script)"
-echo $b
+b="import os; bash_script='curl -Is -X \"GET\" \"<url>\"'; var_name='<url>'; var_value='{url}'; bash_script=bash_script.replace(var_name,var_value); print(bash_script)"
+c=${b/{url}/$url}
+echo $c
 a=$(python -c "import os; bash_script='curl -Is -X \"GET\" \"<url>\"'; var_name='<url>'; var_value='https://www.baidu.com'; bash_script=bash_script.replace(var_name,var_value); print(bash_script)")
 echo $a
 header=$(curl -Is -X "GET" $url)
