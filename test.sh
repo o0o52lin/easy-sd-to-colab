@@ -5,7 +5,9 @@ if [[ ! -z $location ]]; then
   url=$location
 fi
 echo "url: $url"
-header=$(curl -Is -X GET $url)
+a='curl -Is -X "GET" '$url
+echo $a
+header=$(curl -Is -X "GET" $url)
 echo "header:$header"
 header=$(echo "$header" | tr '[:upper:]' '[:lower:]')
 echo "header2:$header"
