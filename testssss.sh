@@ -5,8 +5,8 @@ if [[ ! -z $location ]]; then
   url=$location
 fi
 echo "url: $url"
-a='curl -Is -X "GET" "url"'
-a=${a/url/$url}
+a='curl -Is -X "GET" "<url>"'
+a=${a/<url>/$url}
 echo $a
 header=$(curl -Is -X "GET" $url)
 echo "header:$header"
