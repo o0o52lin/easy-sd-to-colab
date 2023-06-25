@@ -46,8 +46,11 @@ function safe_fetch {
   if [[ -f "$output_dir/$output_filename" ]]; then
     location=$(curl -Is -X GET "$url" | grep -i location | awk '{print $2}')
     if [[ ! -z $location ]]; then
-      url=$location
+      url=$(echo -e "$location" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | tr -d '\n')
     fi
+    header=$(curl -Is -X "GET" "$url")
+    header=$(echo "$header" | tr '[:upper:]' '[:lower:]')
+    
     remote_size=$(curl -Is "$url" | awk '/content-length/ {clen=$2} /x-linked-size/ {xsize=$2} END {if (xsize) print xsize; else print clen;}' | tr -dc '0-9' || echo '')
     local_size=$(stat --format=%s "$output_dir/$output_filename" 2>/dev/null | tr -dc '0-9' || echo '')
     echo "LOCAL_SIZE: $local_size"
