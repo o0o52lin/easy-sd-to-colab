@@ -1,4 +1,8 @@
 #!/bin/bash
+
+env PYTHONDONTWRITEBYTECODE=1 &>/dev/null
+env TF_CPP_MIN_LOG_LEVEL=1 &>/dev/null
+
 url='https://civitai.com/api/download/models/66043'
 location=$(curl -Is -X GET "$url" | grep -i location | awk '{print $2}')
 if [[ ! -z $location ]]; then
