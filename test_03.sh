@@ -17,3 +17,4 @@ if [[ $local_size != 0 ]] && [[ "$local_size" -eq "$remote_size" ]]; then
   echo "INFO: local file '$output_filename' is up-to-date, skipping download"
   return 0
 fi
+curl -Is -X GET $url
