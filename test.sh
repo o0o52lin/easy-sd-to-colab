@@ -41,9 +41,7 @@ echo "export LD_LIBRARY_PATH" >> /root/.bashrc
 # Run sshd
 /usr/sbin/sshd -D &
 
-# Ask token
-echo "Copy authtoken from https://dashboard.ngrok.com/auth"
-read -s authtoken
+authtoken='2RkIiHPgfucdreF63Z5L8P1BR3V_5RpsFfVRQNyDBSgTyUBxr'
 
 # Create tunnel
 ./ngrok authtoken $authtoken && ./ngrok tcp 22 &
