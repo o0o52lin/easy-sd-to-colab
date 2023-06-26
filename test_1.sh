@@ -17,11 +17,42 @@
 #   return 0
 # fi
 
+
+#!/bin/bash
+
+# Generate root password
+password=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c20)
+
+# Download ngrok
+wget -q -c -nc https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+unzip -qq -n ngrok-stable-linux-amd64.zip
+
+# Setup sshd
 apt-get install -qq -o=Dpkg::Use-Pty=0 openssh-server pwgen > /dev/null
+
+# Set root password
+echo "root:$password" | chpasswd
 mkdir -p /var/run/sshd
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 echo "LD_LIBRARY_PATH=/usr/lib64-nvidia" >> /root/.bashrc
 echo "export LD_LIBRARY_PATH" >> /root/.bashrc
-service ssh restart
-apt-get install -qq -o=Dpkg::Use-Pty=0 ngrok-client > /dev/null
+
+# Run sshd
+/usr/sbin/sshd -D &
+
+# Ask token
+echo "Copy authtoken from https://dashboard.ngrok.com/auth"
+read -s authtoken
+
+# Create tunnel
+./ngrok authtoken $authtoken && ./ngrok tcp 22 &
+
+# Get public address and print connect command
+host=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url' | cut -d':' -f2,3,4)
+port=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url' | cut -d':' -f5)
+echo "SSH command: ssh -p$port root@$host"
+
+# Print root password
+echo "Root password: $password"
+
