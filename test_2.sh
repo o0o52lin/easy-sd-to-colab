@@ -29,6 +29,7 @@ unzip -qq -n ngrok-stable-linux-amd64.zip
 
 # Setup sshd
 apt-get install -qq -o=Dpkg::Use-Pty=0 openssh-server pwgen > /dev/null
+apt-get -y install jq
 
 # Set root password
 echo "root:$password" | chpasswd
