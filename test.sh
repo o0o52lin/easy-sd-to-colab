@@ -42,10 +42,8 @@ echo "export LD_LIBRARY_PATH" >> /root/.bashrc
 # Run sshd
 /usr/sbin/sshd -D &
 
-authtoken='2RkIiHPgfucdreF63Z5L8P1BR3V_5RpsFfVRQNyDBSgTyUBxr'
-
 # Create tunnel
-./ngrok authtoken $authtoken && ./ngrok tcp 22 &
+/content/ngrok authtoken '2RkIiHPgfucdreF63Z5L8P1BR3V_5RpsFfVRQNyDBSgTyUBxr' && /content/ngrok tcp 22 &
 
 # Get public address and print connect command
 host=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url' | cut -d':' -f2,3,4)
