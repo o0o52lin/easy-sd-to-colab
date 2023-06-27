@@ -28,9 +28,10 @@ echo "Copy authtoken from https://dashboard.ngrok.com/auth"
 read -s authtoken
 
 # Create tunnel
-ngrok config add-authtoken 2RkIiHPgfucdreF63Z5L8P1BR3V_5RpsFfVRQNyDBSgTyUBxr
+ngrok config add-authtoken $authtoken
 nohup ngrok tcp 22 &
-sleep 2
+echo 'wait for ngrok set up...'
+sleep 3
 # Get public address and print connect command
 res=$(curl -s http://localhost:4040/api/tunnels)
 str=$(echo $res | jq '.tunnels[0].public_url')
