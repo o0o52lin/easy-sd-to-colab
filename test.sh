@@ -4,7 +4,7 @@
 password=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c20)
 
 # Download ngrok
-! wget -q -c -nc https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz && sudo tar xvzf ngrok-v3-stable-linux-amd64.tgz -C /usr/bin
+# wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz -O ngrok.tgz && sudo tar xvzf ngrok-v3-stable-linux-amd64.tgz -C /usr/bin
 
 # Setup sshd
 apt-get install -qq -o=Dpkg::Use-Pty=0 openssh-server pwgen > /dev/null
