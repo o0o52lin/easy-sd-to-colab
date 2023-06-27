@@ -23,7 +23,7 @@ echo "export LD_LIBRARY_PATH" >> /root/.bashrc
 /usr/sbin/sshd -D &
 
 # Create tunnel
-ngrok authtoken '2RkIiHPgfucdreF63Z5L8P1BR3V_5RpsFfVRQNyDBSgTyUBxr'
+ngrok config add-authtoken 2RkIiHPgfucdreF63Z5L8P1BR3V_5RpsFfVRQNyDBSgTyUBxr
 nohup ngrok tcp 22 &
 sleep 2
 # Get public address and print connect command
