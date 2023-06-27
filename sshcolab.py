@@ -6,10 +6,7 @@ password = ''.join(random.choice(string.ascii_letters + string.digits) for�
 
 #Download ngrok
 
-! wget -q -c -nc https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
-
-! unzip -qq -n ngrok-stable-linux-amd64.zip
-
+! wget -q -c -nc https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz && sudo tar xvzf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin
 
 
 #Setup sshd
@@ -50,7 +47,7 @@ authtoken = getpass.getpass()
 
 #Create tunnel
 
-get_ipython().system_raw('./ngrok authtoken $authtoken && ./ngrok tcp 22 &')
+get_ipython().system_raw('/usr/local/bin/ngrok authtoken $authtoken && /usr/local/bin/ngrok tcp 22 &')
 
 
 
@@ -68,4 +65,4 @@ with urllib.request.urlopen('http://localhost:4040/api/tunnels') as response:
 
 #Print root password
 
-print(f'Root password: {password}') 作者：小沙盒工作室 https://www.bilibili.com/read/cv6970519/ 出处：bilibili
+print(f'Root password: {password}')
