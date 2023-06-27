@@ -32,7 +32,7 @@ str=$(echo $res | jq '.tunnels[0].public_url')
 
 # 使用sed命令和正则表达式替换字符串
 new_str=$(echo $str | sed 's/tcp:\/\///')
-
+echo $new_str
 # 使用cut命令提取子字符串
 host=$(echo $new_str | cut -d':' -f1)
 port=$(echo $new_str | cut -d':' -f2)
