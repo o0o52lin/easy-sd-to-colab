@@ -8,7 +8,7 @@ password=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c20)
 
 # Setup sshd
 apt-get install -qq -o=Dpkg::Use-Pty=0 openssh-server pwgen > /dev/null
-apt-get -y install jq
+# apt-get -y install jq
 
 # Set root password
 echo "root:$password" | chpasswd
