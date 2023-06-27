@@ -31,11 +31,11 @@ res=$(curl -s http://localhost:4040/api/tunnels)
 str=$(echo $res | jq '.tunnels[0].public_url')
 
 # 使用sed命令和正则表达式替换字符串
-new_str=$(echo "$str" | sed 's/tcp:\/\///')
+new_str=$(echo $str | sed 's/tcp:\/\///')
 
 # 使用cut命令提取子字符串
-host=$(echo "$new_str" | cut -d':' -f1)
-port=$(echo "$new_str" | cut -d':' -f2)
+host=$(echo $new_str | cut -d':' -f1)
+port=$(echo $new_str | cut -d':' -f2)
 
 echo "SSH command: ssh -p$port root@$host"
 
