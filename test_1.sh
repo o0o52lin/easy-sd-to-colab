@@ -4,7 +4,7 @@
 password=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c20)
 
 # Download ngrok
-! wget -q -c -nc https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz && sudo tar xvzf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin
+! wget -q -c -nc https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz && sudo tar xvzf ngrok-v3-stable-linux-amd64.tgz -C /usr/bin
 
 # Setup sshd
 apt-get install -qq -o=Dpkg::Use-Pty=0 openssh-server pwgen > /dev/null
@@ -22,11 +22,10 @@ echo "export LD_LIBRARY_PATH" >> /root/.bashrc
 /usr/sbin/sshd -D &
 
 # Create tunnel
-/content/ngrok authtoken '2RkIiHPgfucdreF63Z5L8P1BR3V_5RpsFfVRQNyDBSgTyUBxr' && /content/ngrok tcp 22 &
+ngrok authtoken '2RkIiHPgfucdreF63Z5L8P1BR3V_5RpsFfVRQNyDBSgTyUBxr' && ngrok tcp 22 &
 
 # Get public address and print connect command
-host=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url' | cut -d':' -f2,3,4)
-port=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url' | cut -d':' -f5)
+curl -s http://localhost:4040/api/tunnels
 echo "SSH command: ssh -p$port root@$host"
 
 # Print root password
