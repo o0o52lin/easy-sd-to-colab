@@ -4,8 +4,8 @@
 password=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c20)
 
 # Download ngrok
-ngrok_install=$(ngrok -v)
-if [ ! -z "$pid" ]; then
+if ! command -v ngrok &> /dev/null
+then
   echo "ngrok is installing..."
   curl -s -X GET "https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz" -o ngrok-v3-stable-linux-amd64.tgz
   tar xvzf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin
