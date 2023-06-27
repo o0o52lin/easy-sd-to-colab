@@ -32,6 +32,7 @@ ngrok config add-authtoken $authtoken
 nohup ngrok tcp 22 &
 echo 'wait for ngrok set up...'
 sleep 3
+ps aux | grep ngrok | grep -v grep
 # Get public address and print connect command
 res=$(curl -s http://localhost:4040/api/tunnels)
 str=$(echo $res | jq '.tunnels[0].public_url')
