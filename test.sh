@@ -35,9 +35,29 @@ if [ -n "$pid" ]; then
     echo 'Kill old ngrok: pid='$pid
 fi
 
-#Ask token
-echo "Copy authtoken from https://dashboard.ngrok.com/auth"
-read -s authtoken
+if [[ $# -gt 0 ]]; then
+  while [[ $# -gt 0 ]]
+  do
+      key="$1"
+  
+      case $key in
+          -a|--auth-token)
+          authtoken="$2"
+          shift
+          ;;
+          *)
+          echo "Usage: $0 [-a|--auth-token]"
+          echo "Options:"
+          echo "-a, --auth-token          set authtoken"
+          exit 1
+          ;;
+      esac
+  done
+else
+  #Ask token
+  echo "Copy authtoken from https://dashboard.ngrok.com/auth"
+  read -s authtoken
+fi
 
 # Create tunnel
 ngrok config add-authtoken $authtoken
