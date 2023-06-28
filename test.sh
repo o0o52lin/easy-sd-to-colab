@@ -36,28 +36,13 @@ if [ -n "$pid" ]; then
 fi
 
 if [[ $# -gt 0 ]]; then
-  while [[ $# -gt 0 ]]
-  do
-      key="$1"
-  
-      case $key in
-          -a|--auth-token)
-          authtoken="$2"
-          shift
-          ;;
-          *)
-          echo "Usage: $0 [-a|--auth-token]"
-          echo "Options:"
-          echo "-a, --auth-token          set authtoken"
-          exit 1
-          ;;
-      esac
-  done
+  authtoken=$1
 else
   #Ask token
   echo "Copy authtoken from https://dashboard.ngrok.com/auth"
   read -s authtoken
 fi
+echo 'authtoken :'$authtoken
 
 # Create tunnel
 ngrok config add-authtoken $authtoken
