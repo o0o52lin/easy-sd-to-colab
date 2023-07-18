@@ -324,9 +324,8 @@ function install_json {
       echo "$json_var_val"
       if [ "$component_type" = "webui" ]; then
         type="webui"
-        url=$(echo $json_var_val)
-        branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
-        url=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 1)
+        branch=$(echo "$json_var_val" | grep -q "#" && echo "$json_var_val" | cut -d "#" -f 2)
+        url=$(echo "$json_var_val" | cut -d "#" -f 1)
         
         echo "->branch:$branch"
         echo "->url:$url"
