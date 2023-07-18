@@ -1,10 +1,6 @@
 {
    "webui": "https://github.com/camenduru/stable-diffusion-webui#v2.4",
    "checkpoints": [
-      {
-         "filename":"majicmixRealistic_v6.safetensors",
-         "url": "https://civitai.com/api/download/models/94640"
-      }
    ],
    "controlnets": [
       {
