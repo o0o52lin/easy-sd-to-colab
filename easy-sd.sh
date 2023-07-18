@@ -326,6 +326,7 @@ function install_json {
         type="webui"
         url=$(echo $json_var_val)
         branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
+        url=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 1)
         
         echo "->branch:$branch"
         echo "->url:$url"
