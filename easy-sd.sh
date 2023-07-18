@@ -324,10 +324,10 @@ function install_json {
       echo "$json_var_val"
       if [ "$component_type" = "webui" ]; then
         type="webui"
-        branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
         url=$(echo $json_var_val)
+        branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
         
-        echo "->branch00:$branch"
+        echo "->branch:$branch"
         echo "->url:$url"
         echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
         safe_git "$url" $(assemble_target_path $type) ${branch:+$branch}
