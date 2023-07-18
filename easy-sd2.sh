@@ -327,7 +327,7 @@ function install_json {
         branch=$(echo "$url" | grep -q "#" && echo "$url" | cut -d "#" -f 2)
         url=$(echo $json_var_val)
         
-        echo "->branch:$branch"
+        echo "->branch00:$branch"
         echo "->url:$url"
         echo "->This is a $type component Git repo with branch $branch, will be saved to $(assemble_target_path $type)"
         safe_git "$url" $(assemble_target_path $type) ${branch:+$branch}
